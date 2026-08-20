@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>שיעור רשתות מתקדם: ACLs & NAT</title>
+    <style>
+        :root {
+            --bg-color: #f7f4ef;
+            --card-bg: #ffffff;
+            --text-color: #332c27;
+            --accent-color: #c07a36;
+            --accent-hover: #9e6024;
+            --border-color: #e6ded5;
+            --terminal-bg: #1e1e1e;
+            --code-bg: #2b2622;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding-bottom: 80px;
+        }
+
+        /* Header layout updated: Flex row with avatars on the left */
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 30px;
+            background-color: #fff8f0;
+            border: 1px solid var(--border-color);
+            border-bottom: 3px solid var(--accent-color);
+            margin-bottom: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .header-title-container {
+            text-align: right;
+            flex: 1;
+        }
+
+        header h1 {
+            margin: 0 0 5px 0;
+            color: var(--accent-color);
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--accent-color);
+        }
+
+        /* Avatar Container & Animation */
+        .avatar-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            direction: ltr; /* Keeps avatars ordered nicely */
+        }
+
+        .crazy-avatar {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-color);
+            object-fit: cover;
+            animation: spinAndBounce 5s infinite ease-in-out;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .crazy-avatar.large-bot {
+            width: 65px;
+            height: 65px;
+            border: 3px solid #ffffff;
+            animation-duration: 3.5s;
+        }
+
+        .crazy-avatar:nth-child(2) { animation-duration: 3.5s; animation-direction: reverse; border-color: #d97706; }
+        .crazy-avatar:nth-child(3) { animation-duration: 4.5s; border-color: #b45309; }
+
+        @keyframes spinAndBounce {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.15); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        /* Navigation Tabs */
+        .tab-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 5px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            background-color: #efe8de;
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            border-radius: 8px 8px 0 0;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-color);
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        /* Formatting Code & Inline Technical Elements */
+        pre {
+            background-color: var(--code-bg);
+            color: #85d79c;
+            padding: 15px;
+            border-radius: 6px;
+            overflow-x: auto;
+            direction: ltr;
+            text-align: left;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+
+        code, .en-text {
+            direction: ltr;
+            unicode-bidi: embed;
+            font-family: 'Consolas', 'Courier New', monospace;
+            background-color: #f1ebd9;
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: #834e18;
+        }
+
+        pre code {
+            background-color: transparent;
+            color: inherit;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            direction: rtl;
+        }
+
+        th, td {
+            border: 1px solid var(--border-color);
+            padding: 12px;
+            text-align: right;
+        }
+
+        th {
+            background-color: #f5ebd9;
+            color: var(--accent-color);
+        }
+
+        /* Terminal Window Styles */
+        .task-box {
+            background-color: #2a2a2a;
+            border-right: 4px solid var(--accent-color);
+            padding: 18px;
+            margin-bottom: 18px;
+            border-radius: 6px;
+            color: white;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .cli-input-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+            direction: ltr;
+        }
+
+        .cli-input {
+            flex: 1;
+            background-color: #111;
+            border: 1px solid #555;
+            color: #4ec9b0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: 'Consolas', monospace;
+            font-size: 14px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .cli-btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .cli-btn:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .feedback {
+            margin-top: 10px;
+            font-weight: bold;
+            direction: rtl;
+            text-align: right;
+        }
+
+        .feedback.correct { color: #4ade80; }
+        .feedback.incorrect { color: #f87171; }
+
+        /* Floating Bot Widget */
+        #bot-widget {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 1000;
+        }
+
+        #bot-toggle {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 8px 18px 8px 12px;
+            border-radius: 40px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #bot-container {
+            display: none;
+            width: 320px;
+            background-color: var(--card-bg);
+            border: 2px solid var(--accent-color);
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            position: absolute;
+            bottom: 70px;
+            left: 0;
+            overflow: hidden;
+            flex-direction: column;
+        }
+
+        #bot-header {
+            background-color: var(--accent-color);
+            color: white;
+            padding: 12px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bot-body {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .gemini-link-btn {
+            display: inline-block;
+            background-color: #4285f4;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-top: 12px;
+        }
+
+        .sub-note {
+            background-color: #fff8f0;
+            border: 1px dashed var(--accent-color);
+            border-radius: 8px;
+            padding: 14px 18px;
+            margin: 15px 0;
+        }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            direction: ltr;
+            margin: 20px 0;
+            font-family: 'Consolas', 'Courier New', monospace;
+        }
+
+        .flow-box {
+            background-color: #f5ebd9;
+            border: 2px solid var(--accent-color);
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-weight: bold;
+            color: var(--accent-hover);
+            white-space: nowrap;
+        }
+
+        .flow-arrow {
+            font-size: 22px;
+            color: var(--accent-color);
+        }
+
+        .sim-select-row {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-bottom: 15px;
+            direction: rtl;
+        }
+
+        .sim-select-row select {
+            padding: 8px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-family: inherit;
+            font-size: 14px;
+        }
+
+        .acl-rule-line {
+            direction: ltr;
+            text-align: left;
+            padding: 10px 14px;
+            margin: 6px 0;
+            border-radius: 6px;
+            background-color: var(--code-bg);
+            color: #85d79c;
+            font-family: 'Consolas', 'Courier New', monospace;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .acl-rule-line.checking {
+            border-color: #fbbf24;
+            background-color: #4a3f1a;
+            transform: scale(1.02);
+        }
+
+        .acl-rule-line.matched-permit {
+            border-color: #4ade80;
+            background-color: #14351f;
+            color: #4ade80;
+        }
+
+        .acl-rule-line.matched-deny {
+            border-color: #f87171;
+            background-color: #3a1414;
+            color: #f87171;
+        }
+
+        .packet-result-box {
+            margin-top: 15px;
+            padding: 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            text-align: center;
+            display: none;
+        }
+
+        .packet-result-box.result-permit {
+            background-color: #dcfce7;
+            color: #166534;
+            border: 2px solid #4ade80;
+            display: block;
+        }
+
+        .packet-result-box.result-deny {
+            background-color: #fee2e2;
+            color: #991b1b;
+            border: 2px solid #f87171;
+            display: block;
+        }
+
+        .nat-table-wrap {
+            overflow-x: auto;
+        }
+
+        #nat-table tbody tr {
+            animation: fadeInRow 0.5s ease;
+        }
+
+        @keyframes fadeInRow {
+            from { opacity: 0; transform: translateY(-6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .sim-btn-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 12px;
+        }
+
+        .secondary-btn {
+            background-color: #efe8de;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .secondary-btn:hover {
+            background-color: #e2d8c8;
+        }
+
+        .reflection-item {
+            margin-bottom: 22px;
+        }
+
+        .reflection-item textarea {
+            width: 100%;
+            box-sizing: border-box;
+            min-height: 80px;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-family: inherit;
+            font-size: 14px;
+            resize: vertical;
+            direction: rtl;
+        }
+
+        .save-status {
+            font-size: 13px;
+            color: var(--accent-hover);
+            margin-top: 6px;
+            min-height: 18px;
+        }
+
+        .quiz-question-card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 18px;
+            margin-bottom: 16px;
+            background-color: #fffefb;
+        }
+
+        .quiz-question-card h4 {
+            margin-top: 0;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .quiz-option-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .quiz-option-label:hover {
+            background-color: #f5ebd9;
+        }
+
+        .quiz-option-label.opt-correct {
+            background-color: #dcfce7;
+            border-color: #4ade80;
+        }
+
+        .quiz-option-label.opt-incorrect {
+            background-color: #fee2e2;
+            border-color: #f87171;
+        }
+
+        .quiz-explain {
+            margin-top: 10px;
+            padding: 10px 14px;
+            border-radius: 6px;
+            background-color: #f1ebd9;
+            font-size: 14px;
+            display: none;
+        }
+
+        .quiz-check-btn {
+            margin-top: 12px;
+        }
+
+        #quiz-score-panel {
+            position: sticky;
+            top: 10px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        #quiz-final-result {
+            display: none;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 10px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* ===== Interactive Network Diagram Specific Styles ===== */
+        .diagram-wrapper {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            gap: 15px;
+            padding: 25px 15px;
+            background: linear-gradient(135deg, #1e1e2f, #2a2a40);
+            border-radius: 12px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+            direction: ltr;
+        }
+
+        .diagram-node {
+            background: #2d2b42;
+            border: 2px solid var(--accent-color);
+            border-radius: 12px;
+            padding: 15px 20px;
+            text-align: center;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 140px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .diagram-node:hover {
+            transform: translateY(-5px) scale(1.05);
+            border-color: #4ade80;
+            box-shadow: 0 8px 20px rgba(74, 222, 128, 0.2);
+        }
+
+        .diagram-node .node-icon {
+            font-size: 32px;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .diagram-node .node-title {
+            font-weight: bold;
+            font-size: 15px;
+            color: #f5ebd9;
+        }
+
+        .diagram-node .node-subtitle {
+            font-size: 12px;
+            color: #a0a0b0;
+            font-family: 'Consolas', monospace;
+        }
+
+        .diagram-connector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #c07a36;
+            font-weight: bold;
+            font-size: 12px;
+            font-family: 'Consolas', monospace;
+        }
+
+        .diagram-line {
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-color);
+            margin: 5px 0;
+            position: relative;
+        }
+
+        .diagram-info-panel {
+            background-color: #fff8f0;
+            border: 2px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            direction: rtl;
+            text-align: right;
+            min-height: 100px;
+        }
+
+        .diagram-info-panel h3 {
+            margin-top: 0;
+            color: var(--accent-hover);
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <div class="header-title-container">
+            <h1>שיעור רשתות מתקדם: ACLs & NAT</h1>
+            <p>למידה אינטראקטיבית, דיאגרמת רשת, סימולציות, תרגול Cisco, רפלקציה ومבחן מסכם</p>
+        </div>
+
+        <!-- Spinning Avatars aligned to the LEFT of the title -->
+        <div class="avatar-container">
+            <img class="crazy-avatar" src="https://lh3.googleusercontent.com/d/1t9QaPCKLvtAhWncetA83ALY8EIvpnFte" alt="Avatar 1">
+            <img class="crazy-avatar" src="https://lh3.googleusercontent.com/d/1fzqv93VKIW_VT8-e1HdJxBmbU2sFnwlb" alt="Avatar 2">
+            <img class="crazy-avatar" src="https://lh3.googleusercontent.com/d/1oIkZlLHZWtFgoDblyxziTALQZwsyxAOo" alt="Avatar 3">
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="tab-buttons">
+        <button class="tab-btn active" onclick="openTab(event, 'lesson-tab')">📚 תוכן השיעור</button>
+        <button class="tab-btn" onclick="openTab(event, 'diagram-tab')">📊 דיאגרמה אינטראקטיבית</button>
+        <button class="tab-btn" onclick="openTab(event, 'scenarios-tab')">🌐 סביבות ארגוניות (Enterprise)</button>
+        <button class="tab-btn" onclick="openTab(event, 'sim-tab')">🎮 סימולציות</button>
+        <button class="tab-btn" onclick="openTab(event, 'terminal-tab')">💻 חלונית מסוף (12 משימות)</button>
+        <button class="tab-btn" onclick="openTab(event, 'reflection-tab')">🤔 שאלות רפלקציה</button>
+        <button class="tab-btn" onclick="openTab(event, 'quiz-tab')">📝 מבחן מסכם (10 שאלות)</button>
+    </div>
+
+    <!-- TAB 1: LESSON CONTENT -->
+    <div id="lesson-tab" class="tab-content active">
+        <div class="card">
+            <h2>1. מהם ACLs (Access Control Lists)?</h2>
+            <p>רשימת בקרת גישה (<code class="en-text">ACL</code>) היא אוסף חוקים המשמש לסנון תנועת נתונים ברשת. ה-ACL קובע אילו חבילות מורשות (<code class="en-text">Permit</code>) או נחסמות (<code class="en-text">Deny</code>) בממשק הנתב או חומת האש על פי פרמטרים כגון כתובת <code class="en-text">IP</code> מקור/יעד, סוג פרוטוקול, ומספרי פורטים.</p>
+            <ul>
+                <li><strong>סינון אבטחה:</strong> חסימת תנועה בלתי מורשית.</li>
+                <li><strong>בקרת תנועה ומקטור (Segmentation):</strong> הפרדת רשתות ומחלקות.</li>
+                <li><strong>נתוב מבוסס מדיניות (Policy-based Routing) ו-QoS:</strong> תיעדוף נתונים.</li>
+                <li><strong>שילוב עם NAT:</strong> הגדרת התנועה המורשית לתרגום כתובות.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <h2>2. אופן הפעולה ו-Implicit Deny</h2>
+            <p>ה-ACL מוחל בכיוון נכנס (<code class="en-text">Inbound</code>) - לפני הנתוב, או בכיוון יוצא (<code class="en-text">Outbound</code>) - לאחר הנתוב. הבדיקה מתבצעת מלמעלה למטה לפי עיקרון <code class="en-text">First-Match-Wins</code>:</p>
+            <ol>
+                <li>הנתב בודק כל שורה בסדר טורי.</li>
+                <li>ברגע שנמצאה התאמה, הפעולה (<code class="en-text">permit/deny</code>) מבוצעת מיד.</li>
+                <li>אם לא נמצאה שום התאמה, מופעל חוק נסתר בסוף הרשימה:</li>
+            </ol>
+            <pre><code>deny ip any any</code></pre>
+            <p>כלומר, כל תנועה שלא הורשתה במפורש - תיחסם כברירת מחדל.</p>
+        </div>
+
+        <div class="card">
+            <h2>3. Wildcard Mask - איך קוראים אותה?</h2>
+            <p>בניגוד ל-Subnet Mask הרגילה, ה-<code class="en-text">Wildcard Mask</code> "הפוכה": הספרה <code class="en-text">0</code> אומרת "בדוק התאמה מדויקת בסיבית הזו", והספרה <code class="en-text">1</code> אומרת "התעלם מהסיבית הזו - כל ערך מתקבל".</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>מטרה</th>
+                        <th>כתובת רשת</th>
+                        <th>Wildcard Mask</th>
+                        <th>משמעות</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>מארח בודד</td>
+                        <td><code class="en-text">192.168.1.10</code></td>
+                        <td><code class="en-text">0.0.0.0</code></td>
+                        <td>התאמה מדויקת - זהה ל-<code class="en-text">host 192.168.1.10</code></td>
+                    </tr>
+                    <tr>
+                        <td>רשת /24</td>
+                        <td><code class="en-text">192.168.1.0</code></td>
+                        <td><code class="en-text">0.0.0.255</code></td>
+                        <td>כל 254 המארחים ברשת <code class="en-text">192.168.1.0/24</code></td>
+                    </tr>
+                    <tr>
+                        <td>כל הכתובות</td>
+                        <td>-</td>
+                        <td><code class="en-text">255.255.255.255</code></td>
+                        <td>זהה למילת המפתח <code class="en-text">any</code></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="sub-note">💡 <strong>טיפ זיכרון:</strong> Wildcard Mask מתקבלת ע"י החסרת ה-Subnet Mask מ-<code class="en-text">255.255.255.255</code>. לדוגמה: <code class="en-text">255.255.255.255 - 255.255.255.0 = 0.0.0.255</code>.</div>
+        </div>
+
+        <div class="card">
+            <h2>4. סוגי ACLs עיקריים</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>סוג ACL</th>
+                        <th>טווח מזהה</th>
+                        <th>פרמטרי סינון</th>
+                        <th>שימוש נפוץ</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Standard Numbered</strong></td>
+                        <td><code class="en-text">1-99 / 1300-1999</code></td>
+                        <td><code class="en-text">IP</code> מקור בלבד</td>
+                        <td>בקרת גישה בסיסית, אבטחת גישת VTY</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Standard Named</strong></td>
+                        <td>שם טקסטואלי</td>
+                        <td><code class="en-text">IP</code> מקור בלבד</td>
+                        <td>קריאות גבוהה ועריכה נוחה של שורות</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Extended ACL</strong></td>
+                        <td><code class="en-text">100-199 / 2000-2699</code></td>
+                        <td>מקור, יעד, פרוטוקולים (<code class="en-text">TCP/UDP/ICMP</code>) ופורטים</td>
+                        <td>סינון פרטני, הגנת שרתים, חומות אש</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Resequencing</strong></td>
+                        <td>פקודת מערכת</td>
+                        <td>סידור מחדש של מספרי שורות ב-ACL</td>
+                        <td>הכנסת חוקים חדשים בין שורות קיימות</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>5. תרחישי Extended ACL נפוצים</h2>
+            <ul>
+                <li><strong>תרחיש 1: חסימת Telnet לכולם למעט אדמין:</strong></li>
+            </ul>
+<pre><code>access-list 110 permit tcp host 192.168.1.100 any eq 23
+access-list 110 deny tcp any any eq 23
+access-list 110 permit ip any any</code></pre>
+            <ul>
+                <li><strong>תרחיש 2: אישור גלישת Web בלבד (HTTP / HTTPS):</strong></li>
+            </ul>
+<pre><code>access-list 120 permit tcp 10.0.0.0 0.0.0.255 any eq 80
+access-list 120 permit tcp 10.0.0.0 0.0.0.255 any eq 443
+access-list 120 deny ip any any</code></pre>
+            <ul>
+                <li><strong>תרחיש 3: אישור Ping (ICMP) רק משרת ניטור (NOC):</strong></li>
+            </ul>
+<pre><code>access-list 130 permit icmp host 172.16.1.10 any
+access-list 130 deny icmp any any
+access-list 130 permit ip any any</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>6. כיוון ה-ACL ומיקומו הנכון בטופולוגיה</h2>
+            <p>שאלת "איפה מדביקים את ה-ACL?" היא אחת השאלות הנפוצות ביותר במבחני CCNA, ויש לה כלל אצבע פשוט:</p>
+            <div class="flow-diagram">
+                <div class="flow-box">Standard ACL</div>
+                <div class="flow-arrow">➜</div>
+                <div class="flow-box">קרוב ליעד (Destination)</div>
+            </div>
+            <div class="flow-diagram">
+                <div class="flow-box">Extended ACL</div>
+                <div class="flow-arrow">➜</div>
+                <div class="flow-box">קרוב למקור (Source)</div>
+            </div>
+            <p>ההיגיון: <code class="en-text">Standard ACL</code> בודק רק כתובת מקור, ולכן אם נמקם אותו קרוב מדי למקור - עלול לחסום תנועה לגיטימית ליעדים אחרים. <code class="en-text">Extended ACL</code> לעומת זאת בודק גם מקור וגם יעד, ולכן כדאי לחסום אותו כמה שיותר קרוב למקור - כדי לחסוך רוחב פס מיותר ברשת.</p>
+        </div>
+
+        <div class="card">
+            <h2>7. כתובות IP פרטיות (RFC 1918) ו-NAT</h2>
+            <p>כתובות פרטיות אינן מנותבות באינטרנט הציבורי. מנגנון <code class="en-text">NAT</code> מתרגם אותן לכתובות ציבוריות:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>טווח כתובות פרטיות (RFC 1918)</th>
+                        <th>Subnet Mask / CIDR</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Class A</td>
+                        <td><code class="en-text">10.0.0.0 – 10.255.255.255</code></td>
+                        <td><code class="en-text">255.0.0.0 (/8)</code></td>
+                    </tr>
+                    <tr>
+                        <td>Class B</td>
+                        <td><code class="en-text">172.16.0.0 – 172.31.255.255</code></td>
+                        <td><code class="en-text">255.240.0.0 (/12)</code></td>
+                    </tr>
+                    <tr>
+                        <td>Class C</td>
+                        <td><code class="en-text">192.168.0.0 – 192.168.255.255</code></td>
+                        <td><code class="en-text">255.255.0.0 (/16)</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>8. מונחי NAT: Inside/Outside, Local/Global</h2>
+            <p>לפני שמגדירים NAT, חשוב לדעת לקרוא לכל כתובת בשמה הנכון - זה בדיוק מה שנשאלים במבחנים ובראיונות עבודה:</p>
+            <table>
+                <thead>
+                    <tr>
+                        <th>מונח</th>
+                        <th>הגדרה</th>
+                        <th>דוגמה</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong class="en-text">Inside Local</strong></td>
+                        <td>הכתובת הפרטית של המארח הפנימי, כפי שהיא נראית בתוך הרשת המקומית</td>
+                        <td><code class="en-text">192.168.1.10</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong class="en-text">Inside Global</strong></td>
+                        <td>הכתובת הציבורית שאליה תורגמה כתובת המארח הפנימי, כפי שהיא נראית מבחוץ</td>
+                        <td><code class="en-text">200.1.1.10</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong class="en-text">Outside Global</strong></td>
+                        <td>הכתובת הציבורית האמיתית של השרת ביעד, כפי שהוגדרה ע"י בעליה</td>
+                        <td><code class="en-text">8.8.8.8</code></td>
+                    </tr>
+                    <tr>
+                        <td><strong class="en-text">Outside Local</strong></td>
+                        <td>איך כתובת היעד החיצוני נראית מנקודת המבט של הרשת הפנימית (ברוב המקרים זהה ל-Outside Global)</td>
+                        <td><code class="en-text">8.8.8.8</code></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card">
+            <h2>9. סוגי NAT (Network Address Translation)</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>סוג NAT</th>
+                        <th>סוג מיפוי</th>
+                        <th>שימוש בפורטים</th>
+                        <th>שימוש עיקרי</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Static NAT</strong></td>
+                        <td>מיפוי 1-ל-1 קבוע בין IP פרטי לציבורי</td>
+                        <td>לא</td>
+                        <td>אירוח שרתים (Web/Mail) לגישה מבחוץ</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dynamic NAT</strong></td>
+                        <td>מיפוי רבים-לרבים מתוך מאגר (<code class="en-text">Pool</code>)</td>
+                        <td>לא</td>
+                        <td>גישה זמנית לאינטרנט (עד גמר המאגר)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>PAT (NAT Overload)</strong></td>
+                        <td>מיפוי רבים-ל-1 תוך שימוש במספרי פורטים</td>
+                        <td>כן</td>
+                        <td>חיבור מאות/אלפי משתמשים ל-IP ציבורי יחיד</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>פקודות בדיקה ואימות NAT ב-Cisco:</h4>
+            <pre><code>show ip nat translations  ! הצגת טבלת התרגומים הפעילים
+show ip nat statistics    ! הצגת סטטיסטיקות (Hits, Misses, Pools)
+clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
+        </div>
+
+        <div class="card">
+            <h2>10. סדר הפעולות: איך ACL ו-NAT "מדברים" זה עם זה</h2>
+            <p>שילוב שגוי בין ACL ל-NAT הוא אחד הבאגים הנפוצים ביותר בפועל. הכלל החשוב ביותר לזכור:</p>
+            <div class="flow-diagram">
+                <div class="flow-box">חבילה נכנסת מהרשת הפנימית</div>
+                <div class="flow-arrow">➜</div>
+                <div class="flow-box">ACL (Inbound)</div>
+                <div class="flow-arrow">➜</div>
+                <div class="flow-box">NAT (Inside → Outside)</div>
+                <div class="flow-arrow">➜</div>
+                <div class="flow-box">יוצאת לאינטרנט</div>
+            </div>
+            <p>כלומר, כאשר ה-<code class="en-text">ACL</code> וה-<code class="en-text">NAT</code> מוגדרים על אותו ממשק פנימי, ה-<code class="en-text">ACL</code> נבדק <strong>לפני</strong> תרגום הכתובת. משמעות הדבר: כללי ה-<code class="en-text">ACL</code> חייבים להתייחס לכתובות ה-<strong class="en-text">Inside Local</strong> (הפרטיות), ולא לכתובות המתורגמות. טעות נפוצה של תלמידים היא לכתוב חוק ACL לפי הכתובת הציבורית - וזה פשוט לא יעבוד.</p>
+        </div>
+    </div>
+
+    <!-- NEW TAB: INTERACTIVE DIAGRAM & LAB TERMINAL -->
+    <div id="diagram-tab" class="tab-content">
+        <div class="card">
+            <h2>📊 דיאגרמת טופולוגיית רשת אינטראקטיבית</h2>
+            <p>לחץ על כל רכיב בדיאגרמה כדי לקבל הסבר מקיף על תפקידו בטופולוגיה, הכתובות המשויכות אליו ואיך ה-ACL וה-NAT פועלים עליו:</p>
+
+            <div class="diagram-wrapper">
+                <div class="diagram-node" onclick="showDiagramInfo('lan')">
+                    <span class="node-icon">💻</span>
+                    <span class="node-title">LAN פנימי</span>
+                    <span class="node-subtitle">192.168.1.0/24</span>
+                </div>
+
+                <div class="diagram-connector">
+                    <span>Fa0/0 (In)</span>
+                    <div class="diagram-line"></div>
+                    <span>Inside</span>
+                </div>
+
+                <div class="diagram-node" onclick="showDiagramInfo('router')">
+                    <span class="node-icon">🌐</span>
+                    <span class="node-title">נתב Cisco R1</span>
+                    <span class="node-subtitle">ACL & PAT Engine</span>
+                </div>
+
+                <div class="diagram-connector">
+                    <span>Gi0/1 (Out)</span>
+                    <div class="diagram-line"></div>
+                    <span>Outside</span>
+                </div>
+
+                <div class="diagram-node" onclick="showDiagramInfo('internet')">
+                    <span class="node-icon">☁️</span>
+                    <span class="node-title">ענן אינטרנט</span>
+                    <span class="node-subtitle">200.1.1.0/24</span>
+                </div>
+
+                <div class="diagram-connector">
+                    <span>WAN</span>
+                    <div class="diagram-line"></div>
+                    <span>Destination</span>
+                </div>
+
+                <div class="diagram-node" onclick="showDiagramInfo('server')">
+                    <span class="node-icon">🖥️</span>
+                    <span class="node-title">שרת Web חיצוני</span>
+                    <span class="node-subtitle">8.8.8.8</span>
+                </div>
+            </div>
+
+            <div id="diagram-info" class="diagram-info-panel">
+                <h3>💡 הדרכה:</h3>
+                <p>לחץ על אחד הרכיבים בדיאגרמה שלמעלה (מחשבי ה-LAN, הנתב, האינטרנט או השרת) כדי לראות מידע מפורט!</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>💻 חלונית מסוף - 5 משימות תרגול לדיאגרמה</h2>
+            <p>הקלד את פקודות ה-Cisco עבור הטופולוגיה המוצגת למעלה ולחץ על "בדיקה":</p>
+
+            <div id="diagram-tasks-container"></div>
+        </div>
+    </div>
+
+    <!-- TAB 3: ENTERPRISE SCENARIOS -->
+    <div id="scenarios-tab" class="tab-content">
+        <div class="card">
+            <h2>יישום ACLs & NAT בסביבות ארגוניות שונות</h2>
+
+            <h3>1. עסק קטן (Small Enterprise)</h3>
+            <ul>
+                <li><strong>ACLs:</strong> מימוש בסיסי על נתב הקצה או מתג L3. שימוש ב-Standard ACLs להגבלת גישה לניהול ו-Extended ACLs לבקרת Wi-Fi אורחים.</li>
+                <li><strong>NAT:</strong> שימוש ב-PAT (NAT Overload) על נתב הקצה ליציאת כל העובדים לרשת, בצורת <code class="en-text">Static NAT</code> בודד אם קיים שרת מקומי.</li>
+            </ul>
+
+            <h3>2. ארגון גדול (Large Enterprise)</h3>
+            <ul>
+                <li><strong>ACLs:</strong> שימוש נרחב ב-Extended ACLs להפרדה קפדנית בין מחלקות, VLANs, וסגמנטים של הדאטה סנטר. שילוב מול מערכות Identity (כגון Cisco ISE / Active Directory).</li>
+                <li><strong>NAT:</strong> יתירות (HSRP/VRRP), שילוב <code class="en-text">Static NAT</code>, <code class="en-text">Policy NAT</code> ו-NAT Exemption עבור מנהרות VPN סניפיות.</li>
+            </ul>
+
+            <h3>3. מרכז נתונים (Data Center Environment)</h3>
+            <ul>
+                <li><strong>ACLs:</strong> מיקרו-סגמנטציה (Microsegmentation), בידוד דיירים (Tenant Isolation) מבוסס SDN / Cisco ACI. החלת חוקים קרוב ככל הניתן למקור.</li>
+                <li><strong>NAT:</strong> הימנעות מ-NAT בתוך ליבת הדאטה סנטר לשמירה על שקיפות וניטור. ביצוע NAT אך ורק בהיקף (Perimeter).</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- TAB 4: SIMULATIONS -->
+    <div id="sim-tab" class="tab-content">
+        <div class="card">
+            <h2>🎯 סימולציה 1: מסע החבילה דרך ה-ACL</h2>
+            <p>בחר מאפייני חבילה, שלח אותה, וצפה כיצד היא "עוברת" שורה אחר שורה ברשימת ה-ACL עד למציאת ההתאמה הראשונה (עקרון <code class="en-text">First-Match-Wins</code>). הרשימה המדומה כאן היא ACL מס' <code class="en-text">110</code> מהתרחיש שלמדנו (חסימת Telnet לכולם למעט אדמין).</p>
+
+            <div class="sim-select-row">
+                <label class="en-text">Source IP:</label>
+                <select id="acl-src">
+                    <option value="192.168.1.100">192.168.1.100 (מחשב האדמין)</option>
+                    <option value="192.168.1.55">192.168.1.55 (מחשב עובד רגיל)</option>
+                    <option value="10.0.0.20">10.0.0.20 (רשת אחרת)</option>
+                </select>
+                <label class="en-text">Dest Port:</label>
+                <select id="acl-port">
+                    <option value="23">23 (Telnet)</option>
+                    <option value="80">80 (HTTP)</option>
+                    <option value="443">443 (HTTPS)</option>
+                </select>
+                <button class="cli-btn" onclick="runAclSimulation()">🚀 שלח חבילה</button>
+            </div>
+
+            <div id="acl-rules-display"></div>
+            <div id="acl-result" class="packet-result-box"></div>
+        </div>
+
+        <div class="card">
+            <h2>🎯 סימולציה 2: PAT / NAT Overload בזמן אמת</h2>
+            <p>לחץ על "צור חיבור חדש" כדי לדמות מארח פנימי שפותח חיבור החוצה. שים לב איך כל המארחים משתפים אותו <span class="en-text">Inside Global IP</span> יחיד (<code class="en-text">200.1.1.5</code>), כאשר ההבחנה ביניהם מתבצעת על ידי מספר הפורט - זהו בדיוק העיקרון שמאחורי <code class="en-text">PAT (Overload)</code>.</p>
+
+            <div class="sim-btn-row">
+                <button class="cli-btn" onclick="addNatTranslation()">➕ צור חיבור חדש</button>
+                <button class="secondary-btn" onclick="clearNatTable()">🧹 clear ip nat translation *</button>
+            </div>
+
+            <div class="nat-table-wrap">
+                <table id="nat-table">
+                    <thead>
+                        <tr>
+                            <th class="en-text">Inside Local</th>
+                            <th class="en-text">Inside Global</th>
+                            <th class="en-text">Outside Global</th>
+                            <th>פרוטוקול</th>
+                        </tr>
+                    </thead>
+                    <tbody id="nat-table-body"></tbody>
+                </table>
+            </div>
+            <p id="nat-empty-msg" style="color:#999;">הטבלה ריקה - לחץ על "צור חיבור חדש" כדי להתחיל.</p>
+        </div>
+    </div>
+
+    <!-- TAB 5: TERMINAL & TASKS -->
+    <div id="terminal-tab" class="tab-content">
+        <div class="card">
+            <h2>תרגול מעשי: 12 משימות הגדרת Cisco (מבסיסי למתקדם)</h2>
+            <p>הקלד את פקודת ה-Cisco המדויקת עבור כל משימה ולחץ על "בדיקה":</p>
+
+            <div id="tasks-container"></div>
+        </div>
+    </div>
+
+    <!-- TAB 6: REFLECTION QUESTIONS -->
+    <div id="reflection-tab" class="tab-content">
+        <div class="card">
+            <h2>שאלות רפלקציה ולמידה עצמית</h2>
+            <p>כתוב את תשובותיך בתיבות הטקסט. התשובות נשמרות אוטומטית במכשיר שלך.</p>
+            <div id="reflection-container"></div>
+        </div>
+    </div>
+
+    <!-- TAB 7: FINAL QUIZ -->
+    <div id="quiz-tab" class="tab-content">
+        <div class="card">
+            <h2>📝 מבחן מסכם - 10 שאלות רב-ברירה</h2>
+            <p>ענה על כל שאלה ולחץ על "בדוק תשובה" לקבלת משוב מיידי. בסיום כל השאלות תוצג לך תוצאה כוללת.</p>
+            <div id="quiz-score-panel">ציון נוכחי: <span id="quiz-score">0</span> / 10</div>
+            <div id="quiz-container"></div>
+            <div class="sim-btn-row">
+                <button class="secondary-btn" onclick="restartQuiz()">🔄 התחל מבחן מחדש</button>
+            </div>
+            <div id="quiz-final-result"></div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating Bot Window Widget -->
+<div id="bot-widget">
+    <button id="bot-toggle" onclick="toggleBot()">
+        <img class="crazy-avatar large-bot" src="https://lh3.googleusercontent.com/d/1fzqv93VKIW_VT8-e1HdJxBmbU2sFnwlb" alt="Bot Avatar">
+        💬 שאל את הבוט
+    </button>
+    <div id="bot-container">
+        <div id="bot-header">
+            <div>🤖 עוזר הלימוד האישי</div>
+            <div style="cursor:pointer;" onclick="toggleBot()">✖</div>
+        </div>
+        <div class="bot-body">
+            <img class="crazy-avatar" src="https://lh3.googleusercontent.com/d/1fzqv93VKIW_VT8-e1HdJxBmbU2sFnwlb" alt="Bot Avatar">
+            <p>שלום! לצ'אט המלא והמתקדם עם בוט הלימוד הייעודי של השיעור:</p>
+            <a href="https://gemini.google.com/gem/167016ac4a4b?usp=sharing" target="_blank" class="gemini-link-btn">פתח את בוט ה-Gemini ➔</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Tab switching logic
+    function openTab(evt, tabId) {
+        let contents = document.getElementsByClassName("tab-content");
+        for (let i = 0; i < contents.length; i++) {
+            contents[i].classList.remove("active");
+        }
+        let buttons = document.getElementsByClassName("tab-btn");
+        for (let i = 0; i < buttons.length; i++) {
+            buttons[i].classList.remove("active");
+        }
+        document.getElementById(tabId).classList.add("active");
+        evt.currentTarget.classList.add("active");
+    }
+
+    // Toggle bot window
+    function toggleBot() {
+        const bot = document.getElementById('bot-container');
+        bot.style.display = (bot.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    /* ================= INTERACTIVE DIAGRAM INFO ================= */
+    const diagramData = {
+        lan: {
+            title: "💻 רשת ה-LAN הפנימית (Inside Local Network)",
+            desc: "מכילה מחשבים בעלי כתובות IP פרטיות לפי תקן RFC 1918 (למשל 192.168.1.0/24). כתובות אלו אינן מנותבות באינטרנט הציבורי ולכן חייבות תרגום NAT כדי לצאת החוצה. בנוסף, חוקי ACL מסוג Inbound על ממשק הנתב נבדקים מול כתובות אלו."
+        },
+        router: {
+            title: "🌐 הנתב המרכזי Cisco R1 (NAT & ACL Engine)",
+            desc: "רכיב הליבה המבצע גם סינון חבילות (ACL) וגם תרגום כתובות (NAT). הממשק FastEthernet0/0 מוגדר כ-ip nat inside והממשק GigabitEthernet0/1 מוגדר כ-ip nat outside. הנתב בודק את חוקי ה-ACL Inbound לפני ביצוע התרגום!"
+        },
+        internet: {
+            title: "☁️ ענן האינטרנט (Public Network / Outside)",
+            desc: "רשת ציבורית בעלת כתובות IP גלובליות. התנועה היוצאת מהנתב R1 נראית מנקודת המבט של האינטרנט כאילו הגיעה מהכתובת הציבורית של הנתב (Inside Global IP: 200.1.1.5) תודות למנגנון PAT (Overload)."
+        },
+        server: {
+            title: "🖥️ שרת Web חיצוני (Outside Global Host)",
+            desc: "שרת המארח אתר אינטרנט בכתובת הציבורית 8.8.8.8 בפורט 80/443. השרת מקבל את החבילות מ-R1, ומחזיר את התשובה לכתובת הציבורית המתורגמת. הנתב מתרגם אותה בחזרה לכתובת הפרטית של המחשב הפנימי."
+        }
+    };
+
+    function showDiagramInfo(key) {
+        const infoBox = document.getElementById('diagram-info');
+        if (diagramData[key]) {
+            infoBox.innerHTML = `
+                <h3>${diagramData[key].title}</h3>
+                <p>${diagramData[key].desc}</p>
+            `;
+        }
+    }
+
+    /* ================= DIAGRAM 5 SPECIFIC TASKS ================= */
+    const diagramTasks = [
+        { id: 101, title: "משימה 1: הגדרת ממשק פנימי (Inside)", desc: "הגדר את הממשק FastEthernet0/0 כממשק NAT פנימי", expected: "ip nat inside" },
+        { id: 102, title: "משימה 2: הגדרת ממשק חיצוני (Outside)", desc: "הגדר את הממשק GigabitEthernet0/1 כממשק NAT חיצוני", expected: "ip nat outside" },
+        { id: 103, title: "משימה 3: ACL מורשה ל-NAT", desc: "צור Standard ACL מס' 1 המאפשר תנועה מכל רשת ה-LAN הפנימית (192.168.1.0/24)", expected: "access-list 1 permit 192.168.1.0 0.0.0.255" },
+        { id: 104, title: "משימה 4: הפעלת PAT Overload", desc: "הגדר PAT המקשר בין ACL 1 לממשק החיצוני GigabitEthernet0/1 עם overload", expected: "ip nat inside source list 1 interface GigabitEthernet0/1 overload" },
+        { id: 105, title: "משימה 5: החלת ACL על ממשק ה-LAN", desc: "החל את access-group 100 בכיוון נכנס (in) על ממשק FastEthernet0/0", expected: "ip access-group 100 in" }
+    ];
+
+    function renderDiagramTasks() {
+        const container = document.getElementById('diagram-tasks-container');
+        if (!container) return;
+
+        diagramTasks.forEach(t => {
+            const taskDiv = document.createElement('div');
+            taskDiv.className = 'task-box';
+            taskDiv.innerHTML = `
+                <strong>${t.title}</strong>
+                <p style="margin: 5px 0;">${t.desc}</p>
+                <div class="cli-input-group">
+                    <input type="text" id="input-d-${t.id}" class="cli-input" placeholder="הכנס פקודת Cisco...">
+                    <button class="cli-btn" onclick="checkDiagramTask(${t.id})">בדיקה</button>
+                </div>
+                <div id="feedback-d-${t.id}" class="feedback"></div>
+            `;
+            container.appendChild(taskDiv);
+        });
+    }
+
+    function checkDiagramTask(id) {
+        const userInput = document.getElementById(`input-d-${id}`).value.trim().replace(/\s+/g, ' ');
+        const task = diagramTasks.find(t => t.id === id);
+        const feedbackEl = document.getElementById(`feedback-d-${id}`);
+
+        if (userInput.toLowerCase() === task.expected.toLowerCase()) {
+            feedbackEl.className = "feedback correct";
+            feedbackEl.innerText = "✓ תשובה נכונה! כל הכבוד.";
+        } else {
+            feedbackEl.className = "feedback incorrect";
+            feedbackEl.innerText = `✗ לא מדויק. התשובה המצופה: ${task.expected}`;
+        }
+    }
+
+    // Array of 12 Main Terminal Tasks
+    const tasks = [
+        { id: 1, title: "משימה 1 (קל): Standard ACL", desc: "הגדר ACL ממוספר 10 המאפשר (permit) תנועה מהרשת 192.168.1.0/24", expected: "access-list 10 permit 192.168.1.0 0.0.0.255" },
+        { id: 2, title: "משימה 2 (קל): החלת ACL", desc: "החל את access-group 10 בכיוון נכנס (in) על ממשק FastEthernet0/0", expected: "ip access-group 10 in" },
+        { id: 3, title: "משימה 3 (בינוני): Named Standard ACL", desc: "צור Standard ACL בשם HR-NETWORK", expected: "ip access-list standard HR-NETWORK" },
+        { id: 4, title: "משימה 4 (בינוני): Extended ACL - HTTP", desc: "הגדר ACL מורחב 101 המאפשר תנועת TCP מהרשת 192.168.1.0/24 לכל יעד בפורט 80 (eq 80)", expected: "access-list 101 permit tcp 192.168.1.0 0.0.0.255 any eq 80" },
+        { id: 5, title: "משימה 5 (בינוני): חסימת Telnet", desc: "הגדר ACL מורחב 110 החוסם (deny) תנועת TCP מכל מקור לכל יעד בפורט 23", expected: "access-list 110 deny tcp any any eq 23" },
+        { id: 6, title: "משימה 6 (בינוני): Resequencing", desc: "סדר מחדש את מספרי השורות ב-ACL בשם WEB-FILTER מ-10 ובמרווחים של 10", expected: "ip access-list resequence WEB-FILTER 10 10" },
+        { id: 7, title: "משימה 7 (קשה): Static NAT", desc: "הגדר תרגום Static NAT בין כתובת פנימית 192.168.1.10 לכתובת ציבורית 200.1.1.10", expected: "ip nat inside source static 192.168.1.10 200.1.1.10" },
+        { id: 8, title: "משימה 8 (קשה): Dynamic NAT Pool", desc: "הגדר NAT Pool בשם MYPOOL מכתובת 200.1.1.100 עד 200.1.1.110 עם netmask 255.255.255.0", expected: "ip nat pool MYPOOL 200.1.1.100 200.1.1.110 netmask 255.255.255.0" },
+        { id: 9, title: "משימה 9 (מתקדם): PAT Overload על ממשק", desc: "הגדר PAT המשתמש ברשימה 1 על הממשק Serial0/0 עם מעקף (overload)", expected: "ip nat inside source list 1 interface Serial0/0 overload" },
+        { id: 10, title: "משימה 10 (מתקדם): בדיקת NAT", desc: "כתוב את פקודת ה-SHOW להצגת טבלת התרגומים הפעילים של NAT", expected: "show ip nat translations" },
+        { id: 11, title: "משימה 11 (מתקדם): ניקוי NAT", desc: "כתוב את הפקודה לניקוי כל התרגומים הפעילים בטבלת ה-NAT", expected: "clear ip nat translation *" },
+        { id: 12, title: "משימה 12 (מתקדם): סטטיסטיקות NAT", desc: "כתוב את הפקודה להצגת סטטיסטיקות NAT (Hits, Misses ו-Pools)", expected: "show ip nat statistics" }
+    ];
+
+    function renderTasks() {
+        const container = document.getElementById('tasks-container');
+        if (!container) return;
+
+        tasks.forEach(t => {
+            const taskDiv = document.createElement('div');
+            taskDiv.className = 'task-box';
+            taskDiv.innerHTML = `
+                <strong>${t.title}</strong>
+                <p style="margin: 5px 0;">${t.desc}</p>
+                <div class="cli-input-group">
+                    <input type="text" id="input-${t.id}" class="cli-input" placeholder="הכנס פקודת Cisco...">
+                    <button class="cli-btn" onclick="checkTask(${t.id})">בדיקה</button>
+                </div>
+                <div id="feedback-${t.id}" class="feedback"></div>
+            `;
+            container.appendChild(taskDiv);
+        });
+    }
+
+    function checkTask(id) {
+        const userInput = document.getElementById(`input-${id}`).value.trim().replace(/\s+/g, ' ');
+        const task = tasks.find(t => t.id === id);
+        const feedbackEl = document.getElementById(`feedback-${id}`);
+
+        if (userInput.toLowerCase() === task.expected.toLowerCase()) {
+            feedbackEl.className = "feedback correct";
+            feedbackEl.innerText = "✓ תשובה נכונה! כל הכבוד.";
+        } else {
+            feedbackEl.className = "feedback incorrect";
+            feedbackEl.innerText = `✗ לא מדויק. התשובה המצופה: ${task.expected}`;
+        }
+    }
+
+    /* ===================== SIMULATION 1: ACL packet walk ===================== */
+    const aclList = [
+        { text: "access-list 110 permit tcp host 192.168.1.100 any eq 23", src: "192.168.1.100", port: 23, action: "permit" },
+        { text: "access-list 110 deny tcp any any eq 23", src: "any", port: 23, action: "deny" },
+        { text: "access-list 110 permit ip any any", src: "any", port: "any", action: "permit" }
+    ];
+
+    function runAclSimulation() {
+        const src = document.getElementById('acl-src').value;
+        const port = parseInt(document.getElementById('acl-port').value, 10);
+        const rulesDisplay = document.getElementById('acl-rules-display');
+        const resultBox = document.getElementById('acl-result');
+
+        rulesDisplay.innerHTML = '';
+        resultBox.className = 'packet-result-box';
+        resultBox.innerText = '';
+
+        aclList.forEach((rule, idx) => {
+            const div = document.createElement('div');
+            div.className = 'acl-rule-line';
+            div.id = `acl-line-${idx}`;
+            div.innerText = rule.text;
+            rulesDisplay.appendChild(div);
+        });
+
+        let matchedIndex = -1;
+        for (let i = 0; i < aclList.length; i++) {
+            const rule = aclList[i];
+            const srcMatches = (rule.src === 'any' || rule.src === src);
+            const portMatches = (rule.port === 'any' || rule.port === port);
+            if (srcMatches && portMatches) {
+                matchedIndex = i;
+                break;
+            }
+        }
+
+        aclList.forEach((rule, idx) => {
+            setTimeout(() => {
+                const line = document.getElementById(`acl-line-${idx}`);
+                if (!line) return;
+                if (idx < matchedIndex) {
+                    line.classList.add('checking');
+                    setTimeout(() => { line.classList.remove('checking'); }, 350);
+                } else if (idx === matchedIndex) {
+                    line.classList.add(rule.action === 'permit' ? 'matched-permit' : 'matched-deny');
+                    resultBox.classList.add(rule.action === 'permit' ? 'result-permit' : 'result-deny');
+                    resultBox.innerText = rule.action === 'permit'
+                        ? `✓ PERMIT - החבילה עברה. נמצאה התאמה בשורה ${idx + 1}.`
+                        : `✗ DENY - החבילה נחסמה. נמצאה התאמה בשורה ${idx + 1}.`;
+                }
+            }, idx * 500);
+        });
+    }
+
+    /* ===================== SIMULATION 2: PAT / NAT Overload ===================== */
+    const natInsideHosts = ["192.168.1.10", "192.168.1.11", "192.168.1.12", "192.168.1.13"];
+    const natProtocols = ["TCP", "UDP"];
+    let natNextPort = 1024;
+    let natRowCount = 0;
+
+    function addNatTranslation() {
+        const insideLocal = natInsideHosts[Math.floor(Math.random() * natInsideHosts.length)];
+        const insideGlobalPort = natNextPort++;
+        const outsideGlobal = "8.8.8.8:443";
+        const protocol = natProtocols[Math.floor(Math.random() * natProtocols.length)];
+
+        const tbody = document.getElementById('nat-table-body');
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="en-text">${insideLocal}:${1024 + Math.floor(Math.random() * 4000)}</td>
+            <td class="en-text">200.1.1.5:${insideGlobalPort}</td>
+            <td class="en-text">${outsideGlobal}</td>
+            <td>${protocol}</td>
+        `;
+        tbody.appendChild(row);
+        natRowCount++;
+        document.getElementById('nat-empty-msg').style.display = 'none';
+    }
+
+    function clearNatTable() {
+        document.getElementById('nat-table-body').innerHTML = '';
+        document.getElementById('nat-empty-msg').style.display = 'block';
+        natRowCount = 0;
+        natNextPort = 1024;
+    }
+
+    /* ===================== REFLECTION with localStorage ===================== */
+    const reflectionQuestions = [
+        {
+            id: "refl1",
+            title: "משמעות המיקום (Standard vs Extended):",
+            body: "מדוע מומלץ להגדיר Standard ACL קרוב ככל הניתן ליעד, ואילו Extended ACL קרוב ככל הניתן למקור?"
+        },
+        {
+            id: "refl2",
+            title: "סכנת ה-Implicit Deny:",
+            body: "מה יקרה אם תגדיר ACL שמכיל רק שורת deny אחת ותלביש אותו על ממשק? כיצד ניתן למנוע זאת?"
+        },
+        {
+            id: "refl3",
+            title: "שיקולי NAT מול PAT:",
+            body: "באילו נסיבות בארגון תעדיף להשתמש ב-Static NAT ולא ב-PAT, ומדוע?"
+        },
+        {
+            id: "refl4",
+            title: "אתגר הדיבאגינג:",
+            body: "קיבלת דיווח שמשתמשים לא מצליחים לגלוש לאתרי HTTPS באינטרנט. אילו פקודות show תריץ על הנתב כדי לחקור האם הבעיה היא ב-ACL או ב-NAT?"
+        }
+    ];
+
+    function renderReflection() {
+        const container = document.getElementById('reflection-container');
+        if (!container) return;
+
+        reflectionQuestions.forEach((q, idx) => {
+            const wrap = document.createElement('div');
+            wrap.className = 'reflection-item';
+            const savedValue = localStorage.getItem(`acl-nat-${q.id}`) || '';
+            wrap.innerHTML = `
+                <strong>${idx + 1}. ${q.title}</strong>
+                <p style="margin: 5px 0;">${q.body}</p>
+                <textarea id="ta-${q.id}" placeholder="כתוב כאן את תשובתך...">${savedValue}</textarea>
+                <div class="save-status" id="status-${q.id}"></div>
+            `;
+            container.appendChild(wrap);
+
+            const textarea = wrap.querySelector(`#ta-${q.id}`);
+            let saveTimeout;
+            textarea.addEventListener('input', () => {
+                clearTimeout(saveTimeout);
+                const statusEl = document.getElementById(`status-${q.id}`);
+                statusEl.innerText = "כותב...";
+                saveTimeout = setTimeout(() => {
+                    localStorage.setItem(`acl-nat-${q.id}`, textarea.value);
+                    statusEl.innerText = "✓ נשמר";
+                }, 600);
+            });
+        });
+    }
+
+    /* ===================== FINAL QUIZ (10 questions) ===================== */
+    const quizQuestions = [
+        {
+            q: "מהי ברירת המחדל של כל ACL אם לא נמצאה אף התאמה עבור החבילה?",
+            options: ["permit ip any any", "deny ip any any (Implicit Deny)", "מעביר את החבילה ללא בדיקה", "שולח הודעת שגיאה בחזרה למקור"],
+            correct: 1,
+            explain: "בסוף כל ACL קיים חוק נסתר (Implicit Deny) שחוסם כל תנועה שלא הותרה במפורש."
+        },
+        {
+            q: "היכן מומלץ למקם Standard ACL בטופולוגיה?",
+            options: ["קרוב ככל הניתן למקור", "קרוב ככל הניתן ליעד", "תמיד על נתב הגבול (Edge Router) בלבד", "אין משמעות למיקום"],
+            correct: 1,
+            explain: "מכיוון ש-Standard ACL בודק רק כתובת מקור, מיקום קרוב ליעד מונע חסימה של תנועה לגיטימית ליעדים אחרים."
+        },
+        {
+            q: "היכן מומלץ למקם Extended ACL בטופולוגיה?",
+            options: ["קרוב ככל הניתן למקור", "קרוב ככל הניתן ליעד", "רק על מתג ה-Core", "לא ניתן להחיל Extended ACL על ממשק"],
+            correct: 0,
+            explain: "מאחר ש-Extended ACL בודק גם מקור וגם יעד, מיקום קרוב למקור חוסך רוחב פס מיותר ברשת."
+        },
+        {
+            q: "מהו טווח המספרים התקני עבור Extended Numbered ACL?",
+            options: ["1-99", "100-199", "1300-1999", "2700-2999"],
+            correct: 1,
+            explain: "טווח 100-199 (וגם 2000-2699) מיועד ל-Extended ACLs, בעוד 1-99 ו-1300-1999 מיועדים ל-Standard ACLs."
+        },
+        {
+            q: "איזו פקודה מציגה את טבלת תרגומי ה-NAT הפעילים כרגע על הנתב?",
+            options: ["show ip nat statistics", "debug ip nat", "show ip nat translations", "show running-config nat"],
+            correct: 2,
+            explain: "הפקודה show ip nat translations מציגה את כל התרגומים הפעילים כרגע בטבלה."
+        },
+        {
+            q: "מהו העיקרון המרכזי מאחורי PAT (NAT Overload)?",
+            options: [
+                "מיפוי אחד-לאחד קבוע בין כתובת פרטית לציבורית",
+                "מיפוי רבים-לרבים מתוך מאגר כתובות",
+                "מיפוי רבים-ל-1 תוך הבחנה בין המארחים באמצעות מספרי פורטים",
+                "חסימת כל התנועה היוצאת מהרשת הפנימית"
+            ],
+            correct: 2,
+            explain: "PAT מאפשר לריבוי מארחים פנימיים לשתף כתובת IP ציבורית יחידה, כאשר ההבחנה ביניהם מתבצעת לפי מספרי פורטים."
+        },
+        {
+            q: "איזה סוג NAT הכי מתאים לאירוח שרת פנימי שצריך להיות נגיש מהאינטרנט תחת כתובת קבועה?",
+            options: ["Dynamic NAT", "PAT (Overload)", "Static NAT", "NAT Exemption"],
+            correct: 2,
+            explain: "Static NAT יוצר מיפוי קבוע 1-ל-1, ולכן מתאים לשרתים שצריכים כתובת ציבורית יציבה וידועה מראש."
+        },
+        {
+            q: "מהו טווח הכתובות הפרטיות (RFC 1918) של Class A?",
+            options: ["172.16.0.0 – 172.31.255.255", "192.168.0.0 – 192.168.255.255", "10.0.0.0 – 10.255.255.255", "127.0.0.0 – 127.255.255.255"],
+            correct: 2,
+            explain: "טווח Class A הפרטי לפי RFC 1918 הוא 10.0.0.0 עד 10.255.255.255, עם מסכה 255.0.0.0 (/8)."
+        },
+        {
+            q: "מה תפקידה של ה-Wildcard Mask בהגדרת ACL?",
+            options: [
+                "לקבוע את מהירות הקישור",
+                "לסמן אילו סיביות בכתובת ה-IP ייבדקו בהתאמה מדויקת (0) ואילו יתעלמו (1)",
+                "להצפין את תוכן החבילה",
+                "לשמש כתובת ברירת מחדל (Default Gateway)"
+            ],
+            correct: 1,
+            explain: "ב-Wildcard Mask, הספרה 0 מסמנת בדיקה מדויקת של הסיבית, והספרה 1 מסמנת התעלמות ממנה (כל ערך מתקבל)."
+        },
+        {
+            q: "מדוע לא מומלץ לבצע NAT בתוך ליבת (Core) מרכז הנתונים?",
+            options: [
+                "כי NAT לא נתמך כלל במרכזי נתונים",
+                "כדי לשמור על שקיפות התנועה ולאפשר ניטור פשוט ומדויק",
+                "כי הוא מייקר את עלות החומרה באופן משמעותי",
+                "כי NAT עובד רק עם כתובות IPv6"
+            ],
+            correct: 1,
+            explain: "ביצוע NAT רק בהיקף (Perimeter) ולא בליבת מרכז הנתונים שומר על שקיפות מלאה של כתובות המקור והיעד לצורכי ניטור ואבחון."
+        }
+    ];
+
+    let quizScore = 0;
+    let quizAnswered = new Array(quizQuestions.length).fill(false);
+
+    function renderQuiz() {
+        const container = document.getElementById('quiz-container');
+        container.innerHTML = '';
+        quizQuestions.forEach((qq, qIdx) => {
+            const card = document.createElement('div');
+            card.className = 'quiz-question-card';
+            let optionsHtml = '';
+            qq.options.forEach((opt, oIdx) => {
+                optionsHtml += `
+                    <label class="quiz-option-label" id="q${qIdx}-opt${oIdx}">
+                        <input type="radio" name="q${qIdx}" value="${oIdx}">
+                        <span>${opt}</span>
+                    </label>
+                `;
+            });
+            card.innerHTML = `
+                <h4>שאלה ${qIdx + 1}: ${qq.q}</h4>
+                <div class="quiz-options">${optionsHtml}</div>
+                <button class="cli-btn quiz-check-btn" onclick="checkQuizAnswer(${qIdx})">בדוק תשובה</button>
+                <div class="quiz-explain" id="explain-${qIdx}"></div>
+            `;
+            container.appendChild(card);
+        });
+        updateScoreDisplay();
+        document.getElementById('quiz-final-result').style.display = 'none';
+    }
+
+    function checkQuizAnswer(qIdx) {
+        if (quizAnswered[qIdx]) return;
+
+        const selected = document.querySelector(`input[name="q${qIdx}"]:checked`);
+        if (!selected) {
+            alert('נא לבחור תשובה לפני הבדיקה.');
+            return;
+        }
+
+        const chosenIdx = parseInt(selected.value, 10);
+        const qq = quizQuestions[qIdx];
+        const correctIdx = qq.correct;
+
+        for (let i = 0; i < qq.options.length; i++) {
+            const label = document.getElementById(`q${qIdx}-opt${i}`);
+            label.querySelector('input').disabled = true;
+            if (i === correctIdx) {
+                label.classList.add('opt-correct');
+            } else if (i === chosenIdx) {
+                label.classList.add('opt-incorrect');
+            }
+        }
+
+        const explainEl = document.getElementById(`explain-${qIdx}`);
+        explainEl.style.display = 'block';
+        if (chosenIdx === correctIdx) {
+            explainEl.innerHTML = `✓ נכון! ${qq.explain}`;
+            quizScore++;
+        } else {
+            explainEl.innerHTML = `✗ לא מדויק. ${qq.explain}`;
+        }
+
+        quizAnswered[qIdx] = true;
+        updateScoreDisplay();
+
+        if (quizAnswered.every(a => a)) {
+            showFinalResult();
+        }
+    }
+
+    function updateScoreDisplay() {
+        document.getElementById('quiz-score').innerText = quizScore;
+    }
+
+    function showFinalResult() {
+        const finalBox = document.getElementById('quiz-final-result');
+        finalBox.style.display = 'block';
+        let msg = '';
+        if (quizScore >= 9) {
+            msg = `🏆 מדהים! סיימת עם ${quizScore}/10 - שליטה מלאה בחומר!`;
+            finalBox.style.backgroundColor = '#dcfce7';
+            finalBox.style.color = '#166534';
+        } else if (quizScore >= 6) {
+            msg = `👍 כל הכבוד, ${quizScore}/10. יש עדיין מקום לחידוד - כדאי לחזור על הסעיפים שטעית בהם.`;
+            finalBox.style.backgroundColor = '#fef9c3';
+            finalBox.style.color = '#854d0e';
+        } else {
+            msg = `📚 סיימת עם ${quizScore}/10. מומלץ לחזור על תוכן השיעור והסימולציות ולנסות שוב.`;
+            finalBox.style.backgroundColor = '#fee2e2';
+            finalBox.style.color = '#991b1b';
+        }
+        finalBox.innerText = msg;
+    }
+
+    function restartQuiz() {
+        quizScore = 0;
+        quizAnswered = new Array(quizQuestions.length).fill(false);
+        renderQuiz();
+    }
+
+    // Init everything on page load
+    window.onload = function() {
+        renderDiagramTasks();
+        renderTasks();
+        renderReflection();
+        renderQuiz();
+    };
+</script>
+
+</body>
+</html>
