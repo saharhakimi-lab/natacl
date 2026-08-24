@@ -31,7 +31,6 @@
             padding-bottom: 80px;
         }
 
-        /* Header layout updated: Flex row with avatars on the left */
         header {
             display: flex;
             align-items: center;
@@ -65,12 +64,11 @@
             color: var(--accent-color);
         }
 
-        /* Avatar Container & Animation */
         .avatar-container {
             display: flex;
             align-items: center;
             gap: 15px;
-            direction: ltr; /* Keeps avatars ordered nicely */
+            direction: ltr;
         }
 
         .crazy-avatar {
@@ -99,7 +97,6 @@
             100% { transform: rotate(360deg) scale(1); }
         }
 
-        /* Navigation Tabs */
         .tab-buttons {
             display: flex;
             gap: 10px;
@@ -134,7 +131,6 @@
             display: block;
         }
 
-        /* Card Styles */
         .card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
@@ -144,7 +140,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
-        /* Formatting Code & Inline Technical Elements */
         pre {
             background-color: var(--code-bg);
             color: #85d79c;
@@ -190,38 +185,6 @@
             color: var(--accent-color);
         }
 
-        /* Terminal Window Styles */
-        .task-box {
-            background-color: #2a2a2a;
-            border-right: 4px solid var(--accent-color);
-            padding: 18px;
-            margin-bottom: 18px;
-            border-radius: 6px;
-            color: white;
-            direction: rtl;
-            text-align: right;
-        }
-
-        .cli-input-group {
-            display: flex;
-            gap: 10px;
-            margin-top: 12px;
-            direction: ltr;
-        }
-
-        .cli-input {
-            flex: 1;
-            background-color: #111;
-            border: 1px solid #555;
-            color: #4ec9b0;
-            padding: 10px;
-            border-radius: 4px;
-            font-family: 'Consolas', monospace;
-            font-size: 14px;
-            direction: ltr;
-            text-align: left;
-        }
-
         .cli-btn {
             background-color: var(--accent-color);
             color: white;
@@ -236,17 +199,6 @@
             background-color: var(--accent-hover);
         }
 
-        .feedback {
-            margin-top: 10px;
-            font-weight: bold;
-            direction: rtl;
-            text-align: right;
-        }
-
-        .feedback.correct { color: #4ade80; }
-        .feedback.incorrect { color: #f87171; }
-
-        /* Floating Bot Widget */
         #bot-widget {
             position: fixed;
             bottom: 20px;
@@ -547,7 +499,7 @@
             font-weight: bold;
         }
 
-        /* ===== Interactive Network Diagram Specific Styles ===== */
+        /* ===== Diagram Styles ===== */
         .diagram-wrapper {
             display: flex;
             justify-content: space-around;
@@ -639,10 +591,9 @@
     <header>
         <div class="header-title-container">
             <h1>שיעור רשתות מתקדם: ACLs & NAT</h1>
-            <p>למידה אינטראקטיבית, דיאגרמת רשת, סימולציות, תרגול Cisco, רפלקציה ومבחן מסכם</p>
+            <p>למידה אינטראקטיבית, דיאגרמת רשת, סימולציות, תרגול Cisco, רפלקציה ומבחן מסכם</p>
         </div>
 
-        <!-- Spinning Avatars aligned to the LEFT of the title -->
         <div class="avatar-container">
             <img class="crazy-avatar" src="https://lh3.googleusercontent.com/d/1t9QaPCKLvtAhWncetA83ALY8EIvpnFte" alt="Avatar 1">
             <img class="crazy-avatar" src="https://lh3.googleusercontent.com/d/1fzqv93VKIW_VT8-e1HdJxBmbU2sFnwlb" alt="Avatar 2">
@@ -653,7 +604,7 @@
     <!-- Navigation Tabs -->
     <div class="tab-buttons">
         <button class="tab-btn active" onclick="openTab(event, 'lesson-tab')">📚 תוכן השיעור</button>
-        <button class="tab-btn" onclick="openTab(event, 'diagram-tab')">📊 דיאגרמה אינטראקטיבית</button>
+        <button class="tab-btn" onclick="openTab(event, 'diagram-tab')">📊 דיאגרמה אינטראקטיבית & CLI</button>
         <button class="tab-btn" onclick="openTab(event, 'scenarios-tab')">🌐 סביבות ארגוניות (Enterprise)</button>
         <button class="tab-btn" onclick="openTab(event, 'sim-tab')">🎮 סימולציות</button>
         <button class="tab-btn" onclick="openTab(event, 'terminal-tab')">💻 חלונית מסוף (12 משימות)</button>
@@ -922,7 +873,7 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
         </div>
     </div>
 
-    <!-- NEW TAB: INTERACTIVE DIAGRAM & LAB TERMINAL -->
+    <!-- TAB 2: INTERACTIVE DIAGRAM & LAB TERMINAL -->
     <div id="diagram-tab" class="tab-content">
         <div class="card">
             <h2>📊 דיאגרמת טופולוגיית רשת אינטראקטיבית</h2>
@@ -974,15 +925,45 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
 
             <div id="diagram-info" class="diagram-info-panel">
                 <h3>💡 הדרכה:</h3>
-                <p>לחץ על אחד הרכיבים בדיאגרמה שלמעלה (מחשבי ה-LAN, הנתב, האינטרנט או השרת) כדי לראות מידע מפורט!</p>
+                <p>לחץ על אחד הרכיבים בדיאגרמה שלמעלה כדי לראות מידע מפורט!</p>
             </div>
         </div>
 
+        <!-- PACKET TRACER REAL CLI TERMINAL FOR THE DIAGRAM -->
         <div class="card">
-            <h2>💻 חלונית מסוף - 5 משימות תרגול לדיאגרמה</h2>
-            <p>הקלד את פקודות ה-Cisco עבור הטופולוגיה המוצגת למעלה ולחץ על "בדיקה":</p>
+            <h2>💻 מסוף Packet Tracer – משימות תרגול בנתב R1</h2>
+            <p>בצע את 5 המשימות הבאות בתוך חלונית המסוף המדמה CLI אמיתי של Cisco. עליך להיכנס למצבי ההגדרה המתאימים ולבצע את כל השורות הנדרשות:</p>
+            
+            <div class="sub-note" style="margin-bottom: 15px;">
+                <strong>רשימת 5 המשימות לטרמינל:</strong>
+                <ol style="margin: 5px 0 0 20px; padding: 0;">
+                    <li><strong>משימה 1:</strong> הגדר את הממשק <code>FastEthernet0/0</code> כממשק NAT פנימי (Inside).</li>
+                    <li><strong>משימה 2:</strong> הגדר את הממשק <code>GigabitEthernet0/1</code> כממשק NAT חיצוני (Outside).</li>
+                    <li><strong>משימה 3:</strong> צור Standard ACL ממוספר <code>1</code> המאפשר תנועה מרשת ה-LAN הפנימית (<code>192.168.1.0/24</code>).</li>
+                    <li><strong>משימה 4:</strong> הפעל PAT (NAT Overload) המקשר בין <code>list 1</code> לממשק החיצוני <code>GigabitEthernet0/1</code>.</li>
+                    <li><strong>משימה 5:</strong> החל את <code>access-group 100</code> בכיוון נכנס (in) על ממשק <code>FastEthernet0/0</code>.</li>
+                </ol>
+            </div>
 
-            <div id="diagram-tasks-container"></div>
+            <div style="background-color: #1e1e1e; border-radius: 8px; border: 2px solid #444; overflow: hidden; font-family: 'Consolas', monospace;">
+                <div style="background-color: #333; color: #ccc; padding: 6px 12px; font-size: 13px; font-weight: bold; display: flex; justify-content: space-between;">
+                    <span>Packet Tracer CLI - Router R1</span>
+                    <span>IOS Software (C2900)</span>
+                </div>
+                <div id="pt-terminal-history" style="height: 280px; overflow-y: auto; padding: 12px; color: #4ade80; font-size: 14px; line-height: 1.4; direction: ltr; text-align: left; white-space: pre-wrap;">R1></div>
+                <div style="display: flex; background-color: #111; border-top: 1px solid #333; padding: 8px 12px; align-items: center; direction: ltr;">
+                    <span id="pt-prompt" style="color: #4ade80; font-weight: bold; font-family: 'Consolas', monospace; margin-right: 8px;">R1></span>
+                    <input type="text" id="pt-input" style="flex: 1; background: transparent; border: none; color: #fff; font-family: 'Consolas', monospace; font-size: 14px; outline: none;" placeholder="הקלד פקודה (לדוגמה: enable)..." onkeydown="handlePtKey(event)">
+                    <button class="cli-btn" style="padding: 4px 12px; font-size: 12px;" onclick="submitPtCommand()">ENTER</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="cli-btn" onclick="checkAllPtTasks()">✅ בדיקת כל המשימות</button>
+                <button class="secondary-btn" onclick="resetPtTerminal()">🔄 איפוס טרמינל</button>
+            </div>
+
+            <div id="pt-feedback" class="packet-result-box" style="margin-top: 15px;"></div>
         </div>
     </div>
 
@@ -1063,13 +1044,50 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
         </div>
     </div>
 
-    <!-- TAB 5: TERMINAL & TASKS -->
+    <!-- TAB 5: TERMINAL & TASKS (UPDATED TO FULL PACKET TRACER CLI) -->
     <div id="terminal-tab" class="tab-content">
         <div class="card">
-            <h2>תרגול מעשי: 12 משימות הגדרת Cisco (מבסיסי למתקדם)</h2>
-            <p>הקלד את פקודת ה-Cisco המדויקת עבור כל משימה ולחץ על "בדיקה":</p>
+            <h2>💻 מסוף Packet Tracer – 12 משימות הגדרה מלאות (מבסיסי למתקדם)</h2>
+            <p>בצע את 12 המשימות הבאות בתוך חלונית ה-CLI המלאה. עליך להקליד את רצף הפקודות המדויק כולל מעבר בין מצבי הריצה השונים:</p>
 
-            <div id="tasks-container"></div>
+            <div class="sub-note" style="margin-bottom: 15px;">
+                <strong>רשימת 12 המשימות לבדיקה בטרמינל:</strong>
+                <ol style="margin: 5px 0 0 20px; padding: 0; line-height: 1.8;">
+                    <li><strong>משימה 1:</strong> Standard ACL 10 – אישור רשת <code>192.168.1.0/24</code> במצב config.</li>
+                    <li><strong>משימה 2:</strong> החלת <code>access-group 10 in</code> על ממשק <code>FastEthernet0/0</code>.</li>
+                    <li><strong>משימה 3:</strong> יצירת Named Standard ACL בשם <code>HR-NETWORK</code> (כניסה למצב std-nacl).</li>
+                    <li><strong>משימה 4:</strong> Extended ACL 101 – אישור תנועת TCP מהרשת <code>192.168.1.0/24</code> לפורט 80 (HTTP).</li>
+                    <li><strong>משימה 5:</strong> Extended ACL 110 – חסימת תנועת TCP מכל מקור לכל יעד בפורט 23 (Telnet).</li>
+                    <li><strong>משימה 6:</strong> Resequencing – סידור מחדש ל-ACL בשם <code>WEB-FILTER</code> מ-10 ובמרווחים של 10.</li>
+                    <li><strong>משימה 7:</strong> Static NAT – תרגום <code>192.168.1.10</code> ל-<code>200.1.1.10</code>.</li>
+                    <li><strong>משימה 8:</strong> Dynamic NAT Pool – יצירת pool בשם <code>MYPOOL</code> מ-<code>200.1.1.100</code> עד <code>200.1.1.110</code> netmask <code>255.255.255.0</code>.</li>
+                    <li><strong>משימה 9:</strong> PAT Overload – הפעלת NAT inside source list 1 בממשק <code>Serial0/0</code> עם overload.</li>
+                    <li><strong>משימה 10:</strong> הרצת פקודת <code>show ip nat translations</code> (מבוצע במצב Privileged EXEC <code>#</code>).</li>
+                    <li><strong>משימה 11:</strong> הרצת פקודת <code>clear ip nat translation *</code> (מבוצע במצב Privileged EXEC <code>#</code>).</li>
+                    <li><strong>משימה 12:</strong> הרצת פקודת <code>show ip nat statistics</code> (מבוצע במצב Privileged EXEC <code>#</code>).</li>
+                </ol>
+            </div>
+
+            <!-- Main Packet Tracer Terminal Window -->
+            <div style="background-color: #1e1e1e; border-radius: 8px; border: 2px solid #444; overflow: hidden; font-family: 'Consolas', monospace;">
+                <div style="background-color: #333; color: #ccc; padding: 6px 12px; font-size: 13px; font-weight: bold; display: flex; justify-content: space-between;">
+                    <span>Packet Tracer CLI - Lab Router R1</span>
+                    <span>Cisco IOS Command Line Interface</span>
+                </div>
+                <div id="m-pt-terminal-history" style="height: 320px; overflow-y: auto; padding: 12px; color: #4ade80; font-size: 14px; line-height: 1.4; direction: ltr; text-align: left; white-space: pre-wrap;">R1></div>
+                <div style="display: flex; background-color: #111; border-top: 1px solid #333; padding: 8px 12px; align-items: center; direction: ltr;">
+                    <span id="m-pt-prompt" style="color: #4ade80; font-weight: bold; font-family: 'Consolas', monospace; margin-right: 8px;">R1></span>
+                    <input type="text" id="m-pt-input" style="flex: 1; background: transparent; border: none; color: #fff; font-family: 'Consolas', monospace; font-size: 14px; outline: none;" placeholder="הקלד פקודה (לדוגמה: enable)..." onkeydown="handleMainPtKey(event)">
+                    <button class="cli-btn" style="padding: 4px 12px; font-size: 12px;" onclick="submitMainPtCommand()">ENTER</button>
+                </div>
+            </div>
+
+            <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <button class="cli-btn" onclick="checkAllMainPtTasks()">✅ בדיקת 12 המשימות</button>
+                <button class="secondary-btn" onclick="resetMainPtTerminal()">🔄 איפוס מסוף המשימות</button>
+            </div>
+
+            <div id="m-pt-feedback" class="packet-result-box" style="margin-top: 15px;"></div>
         </div>
     </div>
 
@@ -1167,96 +1185,262 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
         }
     }
 
-    /* ================= DIAGRAM 5 SPECIFIC TASKS ================= */
-    const diagramTasks = [
-        { id: 101, title: "משימה 1: הגדרת ממשק פנימי (Inside)", desc: "הגדר את הממשק FastEthernet0/0 כממשק NAT פנימי", expected: "ip nat inside" },
-        { id: 102, title: "משימה 2: הגדרת ממשק חיצוני (Outside)", desc: "הגדר את הממשק GigabitEthernet0/1 כממשק NAT חיצוני", expected: "ip nat outside" },
-        { id: 103, title: "משימה 3: ACL מורשה ל-NAT", desc: "צור Standard ACL מס' 1 המאפשר תנועה מכל רשת ה-LAN הפנימית (192.168.1.0/24)", expected: "access-list 1 permit 192.168.1.0 0.0.0.255" },
-        { id: 104, title: "משימה 4: הפעלת PAT Overload", desc: "הגדר PAT המקשר בין ACL 1 לממשק החיצוני GigabitEthernet0/1 עם overload", expected: "ip nat inside source list 1 interface GigabitEthernet0/1 overload" },
-        { id: 105, title: "משימה 5: החלת ACL על ממשק ה-LAN", desc: "החל את access-group 100 בכיוון נכנס (in) על ממשק FastEthernet0/0", expected: "ip access-group 100 in" }
-    ];
+    /* ================= DIAGRAM PACKET TRACER SIMULATOR LOGIC ================= */
+    let ptState = "user"; // user, priv, config, config-fa00, config-gi01
+    let ptHistoryLog = ["R1>"];
+    let ptExecutedCommands = [];
 
-    function renderDiagramTasks() {
-        const container = document.getElementById('diagram-tasks-container');
-        if (!container) return;
-
-        diagramTasks.forEach(t => {
-            const taskDiv = document.createElement('div');
-            taskDiv.className = 'task-box';
-            taskDiv.innerHTML = `
-                <strong>${t.title}</strong>
-                <p style="margin: 5px 0;">${t.desc}</p>
-                <div class="cli-input-group">
-                    <input type="text" id="input-d-${t.id}" class="cli-input" placeholder="הכנס פקודת Cisco...">
-                    <button class="cli-btn" onclick="checkDiagramTask(${t.id})">בדיקה</button>
-                </div>
-                <div id="feedback-d-${t.id}" class="feedback"></div>
-            `;
-            container.appendChild(taskDiv);
-        });
-    }
-
-    function checkDiagramTask(id) {
-        const userInput = document.getElementById(`input-d-${id}`).value.trim().replace(/\s+/g, ' ');
-        const task = diagramTasks.find(t => t.id === id);
-        const feedbackEl = document.getElementById(`feedback-d-${id}`);
-
-        if (userInput.toLowerCase() === task.expected.toLowerCase()) {
-            feedbackEl.className = "feedback correct";
-            feedbackEl.innerText = "✓ תשובה נכונה! כל הכבוד.";
-        } else {
-            feedbackEl.className = "feedback incorrect";
-            feedbackEl.innerText = `✗ לא מדויק. התשובה המצופה: ${task.expected}`;
+    function getPromptText() {
+        switch (ptState) {
+            case "user": return "R1>";
+            case "priv": return "R1#";
+            case "config": return "R1(config)#";
+            case "config-fa00": return "R1(config-if)#";
+            case "config-gi01": return "R1(config-if)#";
+            default: return "R1>";
         }
     }
 
-    // Array of 12 Main Terminal Tasks
-    const tasks = [
-        { id: 1, title: "משימה 1 (קל): Standard ACL", desc: "הגדר ACL ממוספר 10 המאפשר (permit) תנועה מהרשת 192.168.1.0/24", expected: "access-list 10 permit 192.168.1.0 0.0.0.255" },
-        { id: 2, title: "משימה 2 (קל): החלת ACL", desc: "החל את access-group 10 בכיוון נכנס (in) על ממשק FastEthernet0/0", expected: "ip access-group 10 in" },
-        { id: 3, title: "משימה 3 (בינוני): Named Standard ACL", desc: "צור Standard ACL בשם HR-NETWORK", expected: "ip access-list standard HR-NETWORK" },
-        { id: 4, title: "משימה 4 (בינוני): Extended ACL - HTTP", desc: "הגדר ACL מורחב 101 המאפשר תנועת TCP מהרשת 192.168.1.0/24 לכל יעד בפורט 80 (eq 80)", expected: "access-list 101 permit tcp 192.168.1.0 0.0.0.255 any eq 80" },
-        { id: 5, title: "משימה 5 (בינוני): חסימת Telnet", desc: "הגדר ACL מורחב 110 החוסם (deny) תנועת TCP מכל מקור לכל יעד בפורט 23", expected: "access-list 110 deny tcp any any eq 23" },
-        { id: 6, title: "משימה 6 (בינוני): Resequencing", desc: "סדר מחדש את מספרי השורות ב-ACL בשם WEB-FILTER מ-10 ובמרווחים של 10", expected: "ip access-list resequence WEB-FILTER 10 10" },
-        { id: 7, title: "משימה 7 (קשה): Static NAT", desc: "הגדר תרגום Static NAT בין כתובת פנימית 192.168.1.10 לכתובת ציבורית 200.1.1.10", expected: "ip nat inside source static 192.168.1.10 200.1.1.10" },
-        { id: 8, title: "משימה 8 (קשה): Dynamic NAT Pool", desc: "הגדר NAT Pool בשם MYPOOL מכתובת 200.1.1.100 עד 200.1.1.110 עם netmask 255.255.255.0", expected: "ip nat pool MYPOOL 200.1.1.100 200.1.1.110 netmask 255.255.255.0" },
-        { id: 9, title: "משימה 9 (מתקדם): PAT Overload על ממשק", desc: "הגדר PAT המשתמש ברשימה 1 על הממשק Serial0/0 עם מעקף (overload)", expected: "ip nat inside source list 1 interface Serial0/0 overload" },
-        { id: 10, title: "משימה 10 (מתקדם): בדיקת NAT", desc: "כתוב את פקודת ה-SHOW להצגת טבלת התרגומים הפעילים של NAT", expected: "show ip nat translations" },
-        { id: 11, title: "משימה 11 (מתקדם): ניקוי NAT", desc: "כתוב את הפקודה לניקוי כל התרגומים הפעילים בטבלת ה-NAT", expected: "clear ip nat translation *" },
-        { id: 12, title: "משימה 12 (מתקדם): סטטיסטיקות NAT", desc: "כתוב את הפקודה להצגת סטטיסטיקות NAT (Hits, Misses ו-Pools)", expected: "show ip nat statistics" }
-    ];
-
-    function renderTasks() {
-        const container = document.getElementById('tasks-container');
-        if (!container) return;
-
-        tasks.forEach(t => {
-            const taskDiv = document.createElement('div');
-            taskDiv.className = 'task-box';
-            taskDiv.innerHTML = `
-                <strong>${t.title}</strong>
-                <p style="margin: 5px 0;">${t.desc}</p>
-                <div class="cli-input-group">
-                    <input type="text" id="input-${t.id}" class="cli-input" placeholder="הכנס פקודת Cisco...">
-                    <button class="cli-btn" onclick="checkTask(${t.id})">בדיקה</button>
-                </div>
-                <div id="feedback-${t.id}" class="feedback"></div>
-            `;
-            container.appendChild(taskDiv);
-        });
+    function handlePtKey(e) {
+        if (e.key === "Enter") {
+            submitPtCommand();
+        }
     }
 
-    function checkTask(id) {
-        const userInput = document.getElementById(`input-${id}`).value.trim().replace(/\s+/g, ' ');
-        const task = tasks.find(t => t.id === id);
-        const feedbackEl = document.getElementById(`feedback-${id}`);
+    function submitPtCommand() {
+        const inputEl = document.getElementById("pt-input");
+        const cmd = inputEl.value.trim();
+        if (!cmd) return;
 
-        if (userInput.toLowerCase() === task.expected.toLowerCase()) {
-            feedbackEl.className = "feedback correct";
-            feedbackEl.innerText = "✓ תשובה נכונה! כל הכבוד.";
+        const currentPrompt = getPromptText();
+        ptExecutedCommands.push({ mode: ptState, cmd: cmd.toLowerCase().replace(/\s+/g, ' ') });
+
+        let output = "";
+        const lowerCmd = cmd.toLowerCase().replace(/\s+/g, ' ');
+
+        if (ptState === "user" && (lowerCmd === "enable" || lowerCmd === "en")) {
+            ptState = "priv";
+        } else if (ptState === "priv" && (lowerCmd === "configure terminal" || lowerCmd === "conf t")) {
+            ptState = "config";
+        } else if (ptState === "config" && (lowerCmd === "interface fastethernet0/0" || lowerCmd === "int fa0/0" || lowerCmd === "interface fa0/0")) {
+            ptState = "config-fa00";
+        } else if (ptState === "config" && (lowerCmd === "interface gigabitethernet0/1" || lowerCmd === "int gi0/1" || lowerCmd === "interface gi0/1")) {
+            ptState = "config-gi01";
+        } else if (lowerCmd === "exit") {
+            if (ptState === "config-fa00" || ptState === "config-gi01") ptState = "config";
+            else if (ptState === "config") ptState = "priv";
+            else if (ptState === "priv") ptState = "user";
+        } else if (lowerCmd === "end") {
+            ptState = "priv";
+        }
+
+        const historyBox = document.getElementById("pt-terminal-history");
+        const newPrompt = getPromptText();
+
+        const lineText = `${currentPrompt} ${cmd}${output ? "\n" + output : ""}`;
+        ptHistoryLog.push(lineText);
+        
+        historyBox.innerText = ptHistoryLog.join("\n") + "\n" + newPrompt;
+        document.getElementById("pt-prompt").innerText = newPrompt;
+        historyBox.scrollTop = historyBox.scrollHeight;
+        
+        inputEl.value = "";
+    }
+
+    function resetPtTerminal() {
+        ptState = "user";
+        ptExecutedCommands = [];
+        ptHistoryLog = ["R1>"];
+        document.getElementById("pt-prompt").innerText = "R1>";
+        document.getElementById("pt-terminal-history").innerText = "R1>";
+        document.getElementById("pt-feedback").className = "packet-result-box";
+        document.getElementById("pt-feedback").style.display = "none";
+    }
+
+    function checkAllPtTasks() {
+        const feedback = document.getElementById("pt-feedback");
+        let passed = [false, false, false, false, false];
+
+        ptExecutedCommands.forEach(item => {
+            const c = item.cmd;
+            const m = item.mode;
+
+            if (m === "config-fa00" && c === "ip nat inside") passed[0] = true;
+            if (m === "config-gi01" && c === "ip nat outside") passed[1] = true;
+            if (m === "config" && c === "access-list 1 permit 192.168.1.0 0.0.0.255") passed[2] = true;
+            if (m === "config" && (c === "ip nat inside source list 1 interface gigabitethernet0/1 overload" || c === "ip nat inside source list 1 interface gi0/1 overload")) passed[3] = true;
+            if (m === "config-fa00" && c === "ip access-group 100 in") passed[4] = true;
+        });
+
+        const score = passed.filter(Boolean).length;
+        feedback.style.display = "block";
+
+        if (score === 5) {
+            feedback.className = "packet-result-box result-permit";
+            feedback.innerHTML = "🏆 מצוין! ביצעת את כל 5 המשימות בטרמינל בצורה מושלמת!";
         } else {
-            feedbackEl.className = "feedback incorrect";
-            feedbackEl.innerText = `✗ לא מדויק. התשובה המצופה: ${task.expected}`;
+            feedback.className = "packet-result-box result-deny";
+            let missingText = "הושלמו " + score + " מתוך 5 משימות.<br>חסרות/לא בוצעו במצב הנכון המשימות הבאות:<br>";
+            let missingList = [];
+            if (!passed[0]) missingList.push("• משימה 1: ip nat inside בממשק FastEthernet0/0");
+            if (!passed[1]) missingList.push("• משימה 2: ip nat outside בממשק GigabitEthernet0/1");
+            if (!passed[2]) missingList.push("• משימה 3: access-list 1 permit 192.168.1.0 0.0.0.255");
+            if (!passed[3]) missingList.push("• משימה 4: PAT overload שמשלב את list 1 ו-Gi0/1");
+            if (!passed[4]) missingList.push("• משימה 5: ip access-group 100 in בממשק FastEthernet0/0");
+            
+            feedback.innerHTML = missingText + missingList.join("<br>");
+        }
+    }
+
+    /* ================= MAIN 12-TASK PACKET TRACER SIMULATOR LOGIC (TAB 5) ================= */
+    let mPtState = "user"; // user, priv, config, config-fa00, config-std-hr, config-ext-web
+    let mPtHistoryLog = ["R1>"];
+    let mPtExecutedCommands = [];
+
+    function getMainPromptText() {
+        switch (mPtState) {
+            case "user": return "R1>";
+            case "priv": return "R1#";
+            case "config": return "R1(config)#";
+            case "config-fa00": return "R1(config-if)#";
+            case "config-std-hr": return "R1(config-std-nacl)#";
+            default: return "R1>";
+        }
+    }
+
+    function handleMainPtKey(e) {
+        if (e.key === "Enter") {
+            submitMainPtCommand();
+        }
+    }
+
+    function submitMainPtCommand() {
+        const inputEl = document.getElementById("m-pt-input");
+        const cmd = inputEl.value.trim();
+        if (!cmd) return;
+
+        const currentPrompt = getMainPromptText();
+        const cleanCmd = cmd.toLowerCase().replace(/\s+/g, ' ');
+        mPtExecutedCommands.push({ mode: mPtState, cmd: cleanCmd });
+
+        let output = "";
+
+        // ניהול מצבים ב-CLI של 12 המשימות
+        if (mPtState === "user" && (cleanCmd === "enable" || cleanCmd === "en")) {
+            mPtState = "priv";
+        } else if (mPtState === "priv" && (cleanCmd === "configure terminal" || cleanCmd === "conf t")) {
+            mPtState = "config";
+        } else if (mPtState === "config" && (cleanCmd === "interface fastethernet0/0" || cleanCmd === "int fa0/0" || cleanCmd === "interface fa0/0")) {
+            mPtState = "config-fa00";
+        } else if (mPtState === "config" && (cleanCmd === "ip access-list standard hr-network")) {
+            mPtState = "config-std-hr";
+        } else if (cleanCmd === "exit") {
+            if (mPtState === "config-fa00" || mPtState === "config-std-hr") mPtState = "config";
+            else if (mPtState === "config") mPtState = "priv";
+            else if (mPtState === "priv") mPtState = "user";
+        } else if (cleanCmd === "end") {
+            mPtState = "priv";
+        }
+
+        const historyBox = document.getElementById("m-pt-terminal-history");
+        const newPrompt = getMainPromptText();
+
+        const lineText = `${currentPrompt} ${cmd}${output ? "\n" + output : ""}`;
+        mPtHistoryLog.push(lineText);
+        
+        historyBox.innerText = mPtHistoryLog.join("\n") + "\n" + newPrompt;
+        document.getElementById("m-pt-prompt").innerText = newPrompt;
+        historyBox.scrollTop = historyBox.scrollHeight;
+        
+        inputEl.value = "";
+    }
+
+    function resetMainPtTerminal() {
+        mPtState = "user";
+        mPtExecutedCommands = [];
+        mPtHistoryLog = ["R1>"];
+        document.getElementById("m-pt-prompt").innerText = "R1>";
+        document.getElementById("m-pt-terminal-history").innerText = "R1>";
+        document.getElementById("m-pt-feedback").className = "packet-result-box";
+        document.getElementById("m-pt-feedback").style.display = "none";
+    }
+
+    function checkAllMainPtTasks() {
+        const feedback = document.getElementById("m-pt-feedback");
+        let passed = new Array(12).fill(false);
+
+        mPtExecutedCommands.forEach(item => {
+            const c = item.cmd;
+            const m = item.mode;
+
+            // 1: access-list 10 permit 192.168.1.0 0.0.0.255
+            if (m === "config" && c === "access-list 10 permit 192.168.1.0 0.0.0.255") passed[0] = true;
+
+            // 2: ip access-group 10 in (בתוך interface Fa0/0)
+            if (m === "config-fa00" && c === "ip access-group 10 in") passed[1] = true;
+
+            // 3: ip access-list standard hr-network (כניסה למצב std-nacl)
+            if (m === "config" && c === "ip access-list standard hr-network") passed[2] = true;
+
+            // 4: access-list 101 permit tcp 192.168.1.0 0.0.0.255 any eq 80
+            if (m === "config" && c === "access-list 101 permit tcp 192.168.1.0 0.0.0.255 any eq 80") passed[3] = true;
+
+            // 5: access-list 110 deny tcp any any eq 23
+            if (m === "config" && c === "access-list 110 deny tcp any any eq 23") passed[4] = true;
+
+            // 6: ip access-list resequence web-filter 10 10
+            if (m === "config" && c === "ip access-list resequence web-filter 10 10") passed[5] = true;
+
+            // 7: ip nat inside source static 192.168.1.10 200.1.1.10
+            if (m === "config" && c === "ip nat inside source static 192.168.1.10 200.1.1.10") passed[6] = true;
+
+            // 8: ip nat pool mypool 200.1.1.100 200.1.1.110 netmask 255.255.255.0
+            if (m === "config" && c === "ip nat pool mypool 200.1.1.100 200.1.1.110 netmask 255.255.255.0") passed[7] = true;
+
+            // 9: ip nat inside source list 1 interface serial0/0 overload (או int se0/0)
+            if (m === "config" && (c === "ip nat inside source list 1 interface serial0/0 overload" || c === "ip nat inside source list 1 interface se0/0 overload")) passed[8] = true;
+
+            // 10: show ip nat translations (במצב privileged exec #)
+            if (m === "priv" && c === "show ip nat translations") passed[9] = true;
+
+            // 11: clear ip nat translation * (במצב privileged exec #)
+            if (m === "priv" && c === "clear ip nat translation *") passed[10] = true;
+
+            // 12: show ip nat statistics (במצב privileged exec #)
+            if (m === "priv" && c === "show ip nat statistics") passed[11] = true;
+        });
+
+        const score = passed.filter(Boolean).length;
+        feedback.style.display = "block";
+
+        if (score === 12) {
+            feedback.className = "packet-result-box result-permit";
+            feedback.innerHTML = "🏆 אלוף! ביצעת את כל 12 המשימות בטרמינל בצורה מושלמת!";
+        } else {
+            feedback.className = "packet-result-box result-deny";
+            let missingText = "הושלמו " + score + " מתוך 12 המשימות.<br>המשימות הבאות לא בוצעו או שלא הוקלדו במצב ה-CLI הנכון:<br>";
+            let missingList = [];
+            
+            const taskTitles = [
+                "1: Standard ACL 10 (ב-config)",
+                "2: ip access-group 10 in (בתוך interface Fa0/0)",
+                "3: ip access-list standard HR-NETWORK (ב-config)",
+                "4: Extended ACL 101 permit tcp (ב-config)",
+                "5: Extended ACL 110 deny tcp eq 23 (ב-config)",
+                "6: Resequencing WEB-FILTER 10 10 (ב-config)",
+                "7: Static NAT 192.168.1.10 -> 200.1.1.10 (ב-config)",
+                "8: Dynamic NAT Pool MYPOOL (ב-config)",
+                "9: PAT Overload Serial0/0 (ב-config)",
+                "10: show ip nat translations (במצב R1#)",
+                "11: clear ip nat translation * (במצב R1#)",
+                "12: show ip nat statistics (במצב R1#)"
+            ];
+
+            passed.forEach((p, idx) => {
+                if (!p) missingList.push("• משימה " + taskTitles[idx]);
+            });
+
+            feedback.innerHTML = missingText + missingList.join("<br>");
         }
     }
 
@@ -1579,10 +1763,7 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
         renderQuiz();
     }
 
-    // Init everything on page load
     window.onload = function() {
-        renderDiagramTasks();
-        renderTasks();
         renderReflection();
         renderQuiz();
     };
