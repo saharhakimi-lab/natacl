@@ -583,6 +583,57 @@
             margin-top: 0;
             color: var(--accent-hover);
         }
+
+        /* עיצוב חלונית מורה */
+        .teacher-panel-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background-color: #2b2622;
+            color: #f5ebd9;
+            border: 1px solid var(--accent-color);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 25px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+        }
+
+        .teacher-panel-badge:hover {
+            background-color: var(--accent-color);
+            color: #fff;
+            transform: translateY(-2deg);
+        }
+
+        .teacher-answers-box {
+            display: none;
+            background-color: #1a1e24;
+            border: 2px solid #4ade80;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 15px;
+            color: #e2e8f0;
+            direction: rtl;
+        }
+
+        .teacher-answers-box h3 {
+            color: #4ade80;
+            margin-top: 0;
+        }
+
+        .teacher-answers-box ol {
+            margin: 10px 0 0 20px;
+            padding: 0;
+            line-height: 1.8;
+        }
+
+        .teacher-answers-box code {
+            color: #4ade80;
+            background-color: #0f172a;
+        }
     </style>
 </head>
 <body>
@@ -1044,7 +1095,7 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
         </div>
     </div>
 
-    <!-- TAB 5: TERMINAL & TASKS (UPDATED TO FULL PACKET TRACER CLI) -->
+    <!-- TAB 5: TERMINAL & TASKS (WITH TEACHER ANSWER PANEL) -->
     <div id="terminal-tab" class="tab-content">
         <div class="card">
             <h2>💻 מסוף Packet Tracer – 12 משימות הגדרה מלאות (מבסיסי למתקדם)</h2>
@@ -1088,6 +1139,31 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
             </div>
 
             <div id="m-pt-feedback" class="packet-result-box" style="margin-top: 15px;"></div>
+
+            <!-- TEACHER BADGE & ACCESS PANEL -->
+            <div class="teacher-panel-badge" onclick="unlockTeacherAnswers()">
+                <span>🔒</span>
+                <span>מורה</span>
+            </div>
+
+            <div id="teacher-answers-box" class="teacher-answers-box">
+                <h3>🔑 פתרונות מלאים ל-12 המשימות (חלונית מורה)</h3>
+                <p>כדי לבצע את המשימות בהצלחה בטרמינל, יש להיכנס תחילה למצבים המתאימים (לדוגמה <code>enable</code> ואז <code>configure terminal</code> למשימות 1-9):</p>
+                <ol>
+                    <li><code>access-list 10 permit 192.168.1.0 0.0.0.255</code> <small>(מצב: R1(config)#)</small></li>
+                    <li><code>interface FastEthernet0/0</code> ➔ <code>ip access-group 10 in</code> <small>(מצב: R1(config-if)#)</small></li>
+                    <li><code>ip access-list standard HR-NETWORK</code> <small>(מצב: R1(config)#)</small></li>
+                    <li><code>access-list 101 permit tcp 192.168.1.0 0.0.0.255 any eq 80</code> <small>(מצב: R1(config)#)</small></li>
+                    <li><code>access-list 110 deny tcp any any eq 23</code> <small>(מצב: R1(config)#)</small></li>
+                    <li><code>ip access-list resequence WEB-FILTER 10 10</code> <small>(מצב: R1(config)#)</small></li>
+                    <li><code>ip nat inside source static 192.168.1.10 200.1.1.10</code> <small>(מצב: R1(config)#)</small></li>
+                    <li><code>ip nat pool MYPOOL 200.1.1.100 200.1.1.110 netmask 255.255.255.0</code> <small>(מצב: R1(config)#)</small></li>
+                    <li><code>ip nat inside source list 1 interface Serial0/0 overload</code> <small>(מצב: R1(config)#)</small></li>
+                    <li><code>show ip nat translations</code> <small>(מצב: R1# - Privileged EXEC)</small></li>
+                    <li><code>clear ip nat translation *</code> <small>(מצב: R1# - Privileged EXEC)</small></li>
+                    <li><code>show ip nat statistics</code> <small>(מצב: R1# - Privileged EXEC)</small></li>
+                </ol>
+            </div>
         </div>
     </div>
 
@@ -1153,6 +1229,20 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
     function toggleBot() {
         const bot = document.getElementById('bot-container');
         bot.style.display = (bot.style.display === 'flex') ? 'none' : 'flex';
+    }
+
+    /* ================= TEACHER PANEL LOGIC ================= */
+    function unlockTeacherAnswers() {
+        const password = prompt("הכנס סיסמת מורה:");
+        if (password === "sahar") {
+            const box = document.getElementById("teacher-answers-box");
+            box.style.display = (box.style.display === "block") ? "none" : "block";
+            if (box.style.display === "block") {
+                box.scrollIntoView({ behavior: 'smooth' });
+            }
+        } else if (password !== null) {
+            alert("סיסמה שגויה!");
+        }
     }
 
     /* ================= INTERACTIVE DIAGRAM INFO ================= */
@@ -1293,7 +1383,7 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
     }
 
     /* ================= MAIN 12-TASK PACKET TRACER SIMULATOR LOGIC (TAB 5) ================= */
-    let mPtState = "user"; // user, priv, config, config-fa00, config-std-hr, config-ext-web
+    let mPtState = "user"; // user, priv, config, config-fa00, config-std-hr
     let mPtHistoryLog = ["R1>"];
     let mPtExecutedCommands = [];
 
@@ -1325,7 +1415,6 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
 
         let output = "";
 
-        // ניהול מצבים ב-CLI של 12 המשימות
         if (mPtState === "user" && (cleanCmd === "enable" || cleanCmd === "en")) {
             mPtState = "priv";
         } else if (mPtState === "priv" && (cleanCmd === "configure terminal" || cleanCmd === "conf t")) {
@@ -1373,40 +1462,17 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
             const c = item.cmd;
             const m = item.mode;
 
-            // 1: access-list 10 permit 192.168.1.0 0.0.0.255
             if (m === "config" && c === "access-list 10 permit 192.168.1.0 0.0.0.255") passed[0] = true;
-
-            // 2: ip access-group 10 in (בתוך interface Fa0/0)
             if (m === "config-fa00" && c === "ip access-group 10 in") passed[1] = true;
-
-            // 3: ip access-list standard hr-network (כניסה למצב std-nacl)
             if (m === "config" && c === "ip access-list standard hr-network") passed[2] = true;
-
-            // 4: access-list 101 permit tcp 192.168.1.0 0.0.0.255 any eq 80
             if (m === "config" && c === "access-list 101 permit tcp 192.168.1.0 0.0.0.255 any eq 80") passed[3] = true;
-
-            // 5: access-list 110 deny tcp any any eq 23
             if (m === "config" && c === "access-list 110 deny tcp any any eq 23") passed[4] = true;
-
-            // 6: ip access-list resequence web-filter 10 10
             if (m === "config" && c === "ip access-list resequence web-filter 10 10") passed[5] = true;
-
-            // 7: ip nat inside source static 192.168.1.10 200.1.1.10
             if (m === "config" && c === "ip nat inside source static 192.168.1.10 200.1.1.10") passed[6] = true;
-
-            // 8: ip nat pool mypool 200.1.1.100 200.1.1.110 netmask 255.255.255.0
             if (m === "config" && c === "ip nat pool mypool 200.1.1.100 200.1.1.110 netmask 255.255.255.0") passed[7] = true;
-
-            // 9: ip nat inside source list 1 interface serial0/0 overload (או int se0/0)
             if (m === "config" && (c === "ip nat inside source list 1 interface serial0/0 overload" || c === "ip nat inside source list 1 interface se0/0 overload")) passed[8] = true;
-
-            // 10: show ip nat translations (במצב privileged exec #)
             if (m === "priv" && c === "show ip nat translations") passed[9] = true;
-
-            // 11: clear ip nat translation * (במצב privileged exec #)
             if (m === "priv" && c === "clear ip nat translation *") passed[10] = true;
-
-            // 12: show ip nat statistics (במצב privileged exec #)
             if (m === "priv" && c === "show ip nat statistics") passed[11] = true;
         });
 
