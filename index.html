@@ -115,12 +115,30 @@
             font-weight: bold;
             color: var(--text-color);
             transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .tab-btn.active {
             background-color: var(--accent-color);
             color: white;
             border-color: var(--accent-color);
+        }
+
+        /* נקודה אדומה בטאבים */
+        .tab-dot {
+            width: 9px;
+            height: 9px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 4px rgba(239, 68, 68, 0.5);
+        }
+
+        .tab-btn.active .tab-dot {
+            background-color: #ffffff;
+            box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
         }
 
         .tab-content {
@@ -138,6 +156,14 @@
             padding: 25px;
             margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        /* עיצוב כותרות סביבות ארגוניות */
+        .enterprise-title {
+            color: #b91c1c !important;
+            border-right: 4px solid #ef4444;
+            padding-right: 10px;
+            margin-top: 25px;
         }
 
         pre {
@@ -598,7 +624,7 @@
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 25px;
+            margin-top: 15px;
             box-shadow: 0 2px 6px rgba(0,0,0,0.1);
         }
 
@@ -652,15 +678,15 @@
         </div>
     </header>
 
-    <!-- Navigation Tabs -->
+    <!-- Navigation Tabs עם עיגולים אדומים בודדים -->
     <div class="tab-buttons">
-        <button class="tab-btn active" onclick="openTab(event, 'lesson-tab')">📚 תוכן השיעור</button>
-        <button class="tab-btn" onclick="openTab(event, 'diagram-tab')">📊 דיאגרמה אינטראקטיבית & CLI</button>
-        <button class="tab-btn" onclick="openTab(event, 'scenarios-tab')">🌐 סביבות ארגוניות (Enterprise)</button>
-        <button class="tab-btn" onclick="openTab(event, 'sim-tab')">🎮 סימולציות</button>
-        <button class="tab-btn" onclick="openTab(event, 'terminal-tab')">💻 חלונית מסוף (12 משימות)</button>
-        <button class="tab-btn" onclick="openTab(event, 'reflection-tab')">🤔 שאלות רפלקציה</button>
-        <button class="tab-btn" onclick="openTab(event, 'quiz-tab')">📝 מבחן מסכם (10 שאלות)</button>
+        <button class="tab-btn active" onclick="openTab(event, 'lesson-tab')"><span class="tab-dot"></span> תוכן השיעור</button>
+        <button class="tab-btn" onclick="openTab(event, 'diagram-tab')"><span class="tab-dot"></span> דיאגרמה אינטראקטיבית & CLI</button>
+        <button class="tab-btn" onclick="openTab(event, 'scenarios-tab')"><span class="tab-dot"></span> סביבות ארגוניות</button>
+        <button class="tab-btn" onclick="openTab(event, 'sim-tab')"><span class="tab-dot"></span> סימולציות</button>
+        <button class="tab-btn" onclick="openTab(event, 'terminal-tab')"><span class="tab-dot"></span> חלונית מסוף (12 משימות)</button>
+        <button class="tab-btn" onclick="openTab(event, 'reflection-tab')"><span class="tab-dot"></span> שאלות רפלקציה</button>
+        <button class="tab-btn" onclick="openTab(event, 'quiz-tab')"><span class="tab-dot"></span> מבחן מסכם (10 שאלות)</button>
     </div>
 
     <!-- TAB 1: LESSON CONTENT -->
@@ -983,7 +1009,7 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
         <!-- PACKET TRACER REAL CLI TERMINAL FOR THE DIAGRAM -->
         <div class="card">
             <h2>💻 מסוף Packet Tracer – משימות תרגול בנתב R1</h2>
-            <p>בצע את 5 המשימות הבאות בתוך חלונית המסוף המדמה CLI אמיתי של Cisco. עליך להיכנס למצבי ההגדרה המתאימים ולבצע את כל השורות הנדרשות:</p>
+            <p>בצע את 5 המשימות הבאות בתוך חלונית המסוף המדמה CLI אמיתי של Cisco. עליך להיכנס למצבי ההגדרה המתאימים ולבצע את כל השורות الנדרשות:</p>
             
             <div class="sub-note" style="margin-bottom: 15px;">
                 <strong>רשימת 5 המשימות לטרמינל:</strong>
@@ -1018,24 +1044,24 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
         </div>
     </div>
 
-    <!-- TAB 3: ENTERPRISE SCENARIOS -->
+    <!-- TAB 3: ENTERPRISE SCENARIOS (ללא תרגום לאנגלית ובצבע שונה) -->
     <div id="scenarios-tab" class="tab-content">
         <div class="card">
             <h2>יישום ACLs & NAT בסביבות ארגוניות שונות</h2>
 
-            <h3>1. עסק קטן (Small Enterprise)</h3>
+            <h3 class="enterprise-title">1. עסק קטן</h3>
             <ul>
                 <li><strong>ACLs:</strong> מימוש בסיסי על נתב הקצה או מתג L3. שימוש ב-Standard ACLs להגבלת גישה לניהול ו-Extended ACLs לבקרת Wi-Fi אורחים.</li>
                 <li><strong>NAT:</strong> שימוש ב-PAT (NAT Overload) על נתב הקצה ליציאת כל העובדים לרשת, בצורת <code class="en-text">Static NAT</code> בודד אם קיים שרת מקומי.</li>
             </ul>
 
-            <h3>2. ארגון גדול (Large Enterprise)</h3>
+            <h3 class="enterprise-title">2. ארגון גדול</h3>
             <ul>
                 <li><strong>ACLs:</strong> שימוש נרחב ב-Extended ACLs להפרדה קפדנית בין מחלקות, VLANs, וסגמנטים של הדאטה סנטר. שילוב מול מערכות Identity (כגון Cisco ISE / Active Directory).</li>
                 <li><strong>NAT:</strong> יתירות (HSRP/VRRP), שילוב <code class="en-text">Static NAT</code>, <code class="en-text">Policy NAT</code> ו-NAT Exemption עבור מנהרות VPN סניפיות.</li>
             </ul>
 
-            <h3>3. מרכז נתונים (Data Center Environment)</h3>
+            <h3 class="enterprise-title">3. מרכז נתונים</h3>
             <ul>
                 <li><strong>ACLs:</strong> מיקרו-סגמנטציה (Microsegmentation), בידוד דיירים (Tenant Isolation) מבוסס SDN / Cisco ACI. החלת חוקים קרוב ככל הניתן למקור.</li>
                 <li><strong>NAT:</strong> הימנעות מ-NAT בתוך ליבת הדאטה סנטר לשמירה על שקיפות וניטור. ביצוע NAT אך ורק בהיקף (Perimeter).</li>
@@ -1095,7 +1121,7 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
         </div>
     </div>
 
-    <!-- TAB 5: TERMINAL & TASKS (WITH TEACHER ANSWER PANEL) -->
+    <!-- TAB 5: TERMINAL & TASKS -->
     <div id="terminal-tab" class="tab-content">
         <div class="card">
             <h2>💻 מסוף Packet Tracer – 12 משימות הגדרה מלאות (מבסיסי למתקדם)</h2>
@@ -1140,14 +1166,14 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
 
             <div id="m-pt-feedback" class="packet-result-box" style="margin-top: 15px;"></div>
 
-            <!-- TEACHER BADGE & ACCESS PANEL -->
-            <div class="teacher-panel-badge" onclick="unlockTeacherAnswers()">
+            <!-- TEACHER BADGE & ACCESS PANEL FOR TASKS -->
+            <div class="teacher-panel-badge" onclick="unlockTeacherAnswers('teacher-answers-box')">
                 <span>🔒</span>
-                <span>מורה</span>
+                <span>מורה (פתרונות משימות הטרמינל)</span>
             </div>
 
             <div id="teacher-answers-box" class="teacher-answers-box">
-                <h3>🔑 פתרונות מלאים ל-12 המשימות (חלונית מורה)</h3>
+                <h3>🔑 פתרונות מלאים ל-12 המשימות</h3>
                 <p>כדי לבצע את המשימות בהצלחה בטרמינל, יש להיכנס תחילה למצבים המתאימים (לדוגמה <code>enable</code> ואז <code>configure terminal</code> למשימות 1-9):</p>
                 <ol>
                     <li><code>access-list 10 permit 192.168.1.0 0.0.0.255</code> <small>(מצב: R1(config)#)</small></li>
@@ -1176,7 +1202,7 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
         </div>
     </div>
 
-    <!-- TAB 7: FINAL QUIZ -->
+    <!-- TAB 7: FINAL QUIZ (עם כפתור מורה חדש לתשובות המבחן) -->
     <div id="quiz-tab" class="tab-content">
         <div class="card">
             <h2>📝 מבחן מסכם - 10 שאלות רב-ברירה</h2>
@@ -1187,6 +1213,28 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
                 <button class="secondary-btn" onclick="restartQuiz()">🔄 התחל מבחן מחדש</button>
             </div>
             <div id="quiz-final-result"></div>
+
+            <!-- כפתור מורה מוגן בסיסמה למבחן המסכם -->
+            <div class="teacher-panel-badge" onclick="unlockTeacherAnswers('quiz-teacher-answers-box')">
+                <span>🔒</span>
+                <span>מורה (תשובות מפורטות ל-10 שאלות המבחן)</span>
+            </div>
+
+            <div id="quiz-teacher-answers-box" class="teacher-answers-box">
+                <h3>🔑 תשובות מלאות ומוסברות למבחן המסכם</h3>
+                <ol>
+                    <li><strong>שאלה 1:</strong> <code>deny ip any any (Implicit Deny)</code> – בסוף כל ACL מופעל חוק נסתר החוסם כל תנועה שלא הותר במפורש.</li>
+                    <li><strong>שאלה 2:</strong> <code>קרוב ככל הניתן ליעד</code> – מאחר ש-Standard ACL בודק רק מקור, מיקום קרוב ליעד מונע חסימה לא מוצדקת ליעדים אחרים.</li>
+                    <li><strong>שאלה 3:</strong> <code>קרוב ככל הניתן למקור</code> – Extended ACL בודק גם מקור וגם יעד, ולכן חסימה מוקדמת חוסכת רוחב פס ברשת.</li>
+                    <li><strong>שאלה 4:</strong> <code>100-199</code> – טווח המסיכום המיועד ל-Extended Numbered ACLs.</li>
+                    <li><strong>שאלה 5:</strong> <code>show ip nat translations</code> – הפקודה המציגה את טבלת התרגומים הדינמית/סטטית של ה-NAT.</li>
+                    <li><strong>שאלה 6:</strong> <code>מיפוי רבים-ל-1 תוך הבחנה בין המארחים באמצעות מספרי פורטים</code> – זהו העיקרון של PAT (Overload).</li>
+                    <li><strong>שאלה 7:</strong> <code>Static NAT</code> – יוצר תרגום קבוע 1-ל-1 שמתאים במיוחד לאירוח שרתים.</li>
+                    <li><strong>שאלה 8:</strong> <code>10.0.0.0 – 10.255.255.255</code> – טווח הכתובות הפרטיות התקני של Class A לפי RFC 1918.</li>
+                    <li><strong>שאלה 9:</strong> <code>לסמן אילו סיביות בכתובת ה-IP ייבדקו בהתאמה מדויקת (0) ואילו יתעלמו (1)</code> – הגדרת ה-Wildcard Mask.</li>
+                    <li><strong>שאלה 10:</strong> <code>כדי לשמור על שקיפות התנועה ולאפשר ניטור פשוט ומדויק</code> – סיבת הימנעות מ-NAT בליבת הדאטה סנטר.</li>
+                </ol>
+            </div>
         </div>
     </div>
 </div>
@@ -1232,10 +1280,10 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
     }
 
     /* ================= TEACHER PANEL LOGIC ================= */
-    function unlockTeacherAnswers() {
+    function unlockTeacherAnswers(boxId) {
         const password = prompt("הכנס סיסמת מורה:");
         if (password === "sahar") {
-            const box = document.getElementById("teacher-answers-box");
+            const box = document.getElementById(boxId);
             box.style.display = (box.style.display === "block") ? "none" : "block";
             if (box.style.display === "block") {
                 box.scrollIntoView({ behavior: 'smooth' });
@@ -1276,7 +1324,7 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
     }
 
     /* ================= DIAGRAM PACKET TRACER SIMULATOR LOGIC ================= */
-    let ptState = "user"; // user, priv, config, config-fa00, config-gi01
+    let ptState = "user"; 
     let ptHistoryLog = ["R1>"];
     let ptExecutedCommands = [];
 
@@ -1383,7 +1431,7 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
     }
 
     /* ================= MAIN 12-TASK PACKET TRACER SIMULATOR LOGIC (TAB 5) ================= */
-    let mPtState = "user"; // user, priv, config, config-fa00, config-std-hr
+    let mPtState = "user";
     let mPtHistoryLog = ["R1>"];
     let mPtExecutedCommands = [];
 
