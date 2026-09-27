@@ -429,29 +429,40 @@
             background-color: #e2d8c8;
         }
 
+        /* עיצוב מוגדל עבור שאלות הרפלקציה */
         .reflection-item {
-            margin-bottom: 22px;
+            margin-bottom: 28px;
+            font-size: 19px;
+            line-height: 1.7;
+        }
+
+        .reflection-item strong {
+            font-size: 21px;
+            color: var(--accent-hover);
         }
 
         .reflection-item textarea {
             width: 100%;
             box-sizing: border-box;
-            min-height: 80px;
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 6px;
-            border: 1px solid var(--border-color);
+            min-height: 110px;
+            margin-top: 12px;
+            padding: 14px;
+            border-radius: 8px;
+            border: 1.5px solid var(--border-color);
             font-family: inherit;
-            font-size: 15px;
+            font-size: 18px;
             resize: vertical;
             direction: rtl;
+            background-color: #fffefb;
+            box-shadow: inset 0 1px 4px rgba(0,0,0,0.03);
         }
 
         .save-status {
-            font-size: 14px;
+            font-size: 15px;
             color: var(--accent-hover);
             margin-top: 6px;
-            min-height: 18px;
+            min-height: 20px;
+            font-weight: bold;
         }
 
         .quiz-question-card {
@@ -617,18 +628,18 @@
         .teacher-panel-badge {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             background-color: #2b2622;
             color: #f5ebd9;
-            border: 1px solid var(--accent-color);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 15px;
+            border: 1.5px solid var(--accent-color);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 17px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
-            margin-top: 15px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+            margin-top: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
         }
 
         .teacher-panel-badge:hover {
@@ -641,22 +652,24 @@
             display: none;
             background-color: #1a1e24;
             border: 2px solid #4ade80;
-            border-radius: 8px;
-            padding: 20px;
-            margin-top: 15px;
+            border-radius: 10px;
+            padding: 22px;
+            margin-top: 18px;
             color: #e2e8f0;
             direction: rtl;
+            font-size: 17px;
         }
 
         .teacher-answers-box h3 {
             color: #4ade80;
             margin-top: 0;
+            font-size: 20px;
         }
 
         .teacher-answers-box ol {
             margin: 10px 0 0 20px;
             padding: 0;
-            line-height: 1.8;
+            line-height: 1.85;
         }
 
         .teacher-answers-box code {
@@ -1012,7 +1025,7 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
         <!-- PACKET TRACER REAL CLI TERMINAL FOR THE DIAGRAM -->
         <div class="card">
             <h2>💻 מסוף Packet Tracer – משימות תרגול בנתב R1</h2>
-            <p>בצע את 5 המשימות הבאות בתוך חלונית המסוף המדמה CLI אמיתי של Cisco. עליך להיכנס למצבי ההגדרה המתאימים ולבצע את כל השורות الנדרשות:</p>
+            <p>בצע את 5 המשימות הבאות בתוך חלונית המסוף המדמה CLI אמיתי של Cisco. עליך להיכנס למצבי ההגדרה המתאימים ולבצע את כל השורות הנדרשות:</p>
             
             <div class="sub-note" style="margin-bottom: 15px;">
                 <strong>רשימת 5 המשימות לטרמינל:</strong>
@@ -1047,7 +1060,7 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
         </div>
     </div>
 
-    <!-- TAB 3: ENTERPRISE SCENARIOS (ללא תרגום לאנגלית ובצבע שונה) -->
+    <!-- TAB 3: ENTERPRISE SCENARIOS -->
     <div id="scenarios-tab" class="tab-content">
         <div class="card">
             <h2>יישום ACLs & NAT בסביבות ארגוניות שונות</h2>
@@ -1196,16 +1209,56 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
         </div>
     </div>
 
-    <!-- TAB 6: REFLECTION QUESTIONS -->
+    <!-- TAB 6: REFLECTION QUESTIONS (מעודכן: פונט מוגדל, מונחים ממוסגרים וכפתור מורה מוגן בסיסמה) -->
     <div id="reflection-tab" class="tab-content">
         <div class="card">
             <h2>שאלות רפלקציה ולמידה עצמית</h2>
-            <p>כתוב את תשובותיך בתיבות הטקסט. התשובות נשמרות אוטומטית במכשיר שלך.</p>
+            <p style="font-size: 18px;">כתוב את תשובותיך בתיבות הטקסט. התשובות נשמרות אוטומטית במכשיר שלך.</p>
+            
             <div id="reflection-container"></div>
+
+            <!-- כפתור מורה מעוצב ומאובטח לרפלקציה -->
+            <div class="teacher-panel-badge" onclick="unlockTeacherAnswers('reflection-teacher-answers-box')">
+                <span>🔒</span>
+                <span>מורה (תשובות מומלצות לשאלות הרפלקציה)</span>
+            </div>
+
+            <div id="reflection-teacher-answers-box" class="teacher-answers-box">
+                <h3>🔑 תשובות מפורטות ומדויקות לשאלות הרפלקציה</h3>
+                <ol>
+                    <li>
+                        <strong>משמעות המיקום (<code class="en-text">Standard ACL</code> מול <code class="en-text">Extended ACL</code>):</strong><br>
+                        חוקי ה-<code class="en-text">Standard ACL</code> בודקים <strong>אך ורק את כתובת ה-<code class="en-text">IP</code> של המקור (<code class="en-text">Source IP</code>)</strong>. אם נמקם אותם קרוב למקור, הנתב יחסום את המחשב מלהוציא תנועה בכלל - גם ליעדים מורשים אחרים ברשת. לכן, מציבים אותם קרוב ככל הניתן ליעד (<code class="en-text">Destination</code>).<br>
+                        לעומת זאת, <code class="en-text">Extended ACL</code> בודק כתובת מקור, כתובת יעד, פרוטוקול ופורט. מאחר שיש לנתב את כל המידע הנדרש כדי לקבל החלטה מדויקת, נעדיף לחסום תנועה בלתי מורשת <strong>קרוב ככל הניתן למקור (<code class="en-text">Source</code>)</strong> כדי למנוע ממנה לעבור בנתבים נוספים ולבזבז רוחב פס יקר ברשת.
+                    </li>
+                    <br>
+                    <li>
+                        <strong>סכנת ה-<code class="en-text">Implicit Deny</code>:</strong><br>
+                        בסוף כל <code class="en-text">ACL</code> מופעל חוק נסתר אוטומטי של <code class="en-text">deny ip any any</code>. אם נגדיר <code class="en-text">ACL</code> שיש בו רק שורת <code class="en-text">deny</code> אחת (למשל חסימת מחשב מסוים), כל חבילה אחרת שתגיע ולא תתאים לשורה הזו - תמשיך לשורה הנסתרת בסוף ותחסם גם כן! כתוצאה מכך, <strong>כל התנועה בממשק תיחסם לחלוטין</strong>.<br>
+                        כדי למנוע זאת, חייבים להוסיף שורת אישור מפורשת בסוף הרשימה, כגון <code class="en-text">permit ip any any</code>.
+                    </li>
+                    <br>
+                    <li>
+                        <strong>שיקולי <code class="en-text">Static NAT</code> מול <code class="en-text">PAT (NAT Overload)</code>:</strong><br>
+                        נשתמש ב-<code class="en-text">Static NAT</code> (תרגום קבוע 1-ל-1) כאשר אנו מארחים שרת פנימי בארגון (כגון שרת <code class="en-text">Web</code>, שרת דואר <code class="en-text">SMTP</code>, או שרת <code class="en-text">VPN</code>) שצריך להיות נגיש באופן קבוע ויזום על ידי משתמשים מכל רחבי האינטרנט דרך כתובת <code class="en-text">IP</code> ציבורית קבועה וידועה מראש.<br>
+                        לעומת זאת, נשתמש ב-<code class="en-text">PAT</code> עבור כל תחנות הקצה של המשתמשים בארגון, המזמינים תקשורת רק בכיוון היוצא החוצה לאינטרנט.
+                    </li>
+                    <br>
+                    <li>
+                        <strong>אתגר הדיבאגינג (<code class="en-text">Debugging & Troubleshooting</code>):</strong><br>
+                        הפקודות המרכזיות להרצה על הנתב לחקירת הבעיה הן:
+                        <ul>
+                            <li><code class="en-text">show ip access-lists</code> – לבדוק האם ממוני הראיות (<code class="en-text">matches / match counters</code>) של חוקי ה-<code class="en-text">ACL</code> עולים בעת ניסיון גלישה בפורט 443 (<code class="en-text">HTTPS</code>), והאם קיים חוק <code class="en-text">deny</code> שבטעות חוסם תנועה זו.</li>
+                            <li><code class="en-text">show ip nat translations</code> – לבדוק האם נוצרות שורות תרגום פעילות עבור הכתובות הפרטיות בפורט 443 בטבלת ה-<code class="en-text">NAT</code>.</li>
+                            <li><code class="en-text">show ip nat statistics</code> – לבדוק האם הממשקים הוגדרו נכון כ-<code class="en-text">inside</code> ו-<code class="en-text">outside</code>, והאם יש גידול במספר ה-Misses או שרשימת ה-ACL של ה-NAT תקינה.</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
         </div>
     </div>
 
-    <!-- TAB 7: FINAL QUIZ (עם כפתור מורה חדש לתשובות המבחן) -->
+    <!-- TAB 7: FINAL QUIZ -->
     <div id="quiz-tab" class="tab-content">
         <div class="card">
             <h2>📝 מבחן מסכם - 10 שאלות רב-ברירה</h2>
@@ -1647,27 +1700,27 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
         natNextPort = 1024;
     }
 
-    /* ===================== REFLECTION with localStorage ===================== */
+    /* ===================== REFLECTION with localStorage (עם מונחים ממוסגרים ופונט מוגדל) ===================== */
     const reflectionQuestions = [
         {
             id: "refl1",
-            title: "משמעות המיקום (Standard vs Extended):",
-            body: "מדוע מומלץ להגדיר Standard ACL קרוב ככל הניתן ליעד, ואילו Extended ACL קרוב ככל הניתן למקור?"
+            title: "משמעות המיקום (<code class=\"en-text\">Standard</code> מול <code class=\"en-text\">Extended</code>):",
+            body: "מדוע מומלץ להגדיר <code class=\"en-text\">Standard ACL</code> קרוב ככל הניתן ליעד (<code class=\"en-text\">Destination</code>), ואילו <code class=\"en-text\">Extended ACL</code> קרוב ככל הניתן למקור (<code class=\"en-text\">Source</code>)?"
         },
         {
             id: "refl2",
-            title: "סכנת ה-Implicit Deny:",
-            body: "מה יקרה אם תגדיר ACL שמכיל רק שורת deny אחת ותלביש אותו על ממשק? כיצד ניתן למנוע זאת?"
+            title: "סכנת ה-<code class=\"en-text\">Implicit Deny</code>:",
+            body: "מה יקרה אם תגדיר <code class=\"en-text\">ACL</code> שמכיל רק שורת <code class=\"en-text\">deny</code> אחת ותלביש אותו על ממשק? כיצד ניתן למנוע זאת?"
         },
         {
             id: "refl3",
-            title: "שיקולי NAT מול PAT:",
-            body: "באילו נסיבות בארגון תעדיף להשתמש ב-Static NAT ולא ב-PAT, ומדוע?"
+            title: "שיקולי <code class=\"en-text\">NAT</code> מול <code class=\"en-text\">PAT</code>:",
+            body: "באילו נסיבות בארגון תעדיף להשתמש ב-<code class=\"en-text\">Static NAT</code> ולא ב-<code class=\"en-text\">PAT (NAT Overload)</code>, ומדוע?"
         },
         {
             id: "refl4",
-            title: "אתגר הדיבאגינג:",
-            body: "קיבלת דיווח שמשתמשים לא מצליחים לגלוש לאתרי HTTPS באינטרנט. אילו פקודות show תריץ על הנתב כדי לחקור האם הבעיה היא ב-ACL או ב-NAT?"
+            title: "אתגר הדיבאגינג (<code class=\"en-text\">Troubleshooting</code>):",
+            body: "קיבלת דיווח שמשתמשים לא מצליחים לגלוש לאתרי <code class=\"en-text\">HTTPS</code> באינטרנט. אילו פקודות <code class=\"en-text\">show</code> תריץ על הנתב כדי לחקור האם הבעיה היא ב-<code class=\"en-text\">ACL</code> או ב-<code class=\"en-text\">NAT</code>?"
         }
     ];
 
@@ -1681,8 +1734,8 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
             const savedValue = localStorage.getItem(`acl-nat-${q.id}`) || '';
             wrap.innerHTML = `
                 <strong>${idx + 1}. ${q.title}</strong>
-                <p style="margin: 5px 0;">${q.body}</p>
-                <textarea id="ta-${q.id}" placeholder="כתוב כאן את תשובתך...">${savedValue}</textarea>
+                <p style="margin: 6px 0;">${q.body}</p>
+                <textarea id="ta-${q.id}" placeholder="כתוב כאן את תשובתך המפורטת...">${savedValue}</textarea>
                 <div class="save-status" id="status-${q.id}"></div>
             `;
             container.appendChild(wrap);
