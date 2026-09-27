@@ -22,7 +22,8 @@
             color: var(--text-color);
             margin: 0;
             padding: 20px;
-            line-height: 1.6;
+            line-height: 1.65;
+            font-size: 17px;
         }
 
         .container {
@@ -113,6 +114,7 @@
             border-radius: 8px 8px 0 0;
             cursor: pointer;
             font-weight: bold;
+            font-size: 15px;
             color: var(--text-color);
             transition: all 0.2s ease;
             display: flex;
@@ -182,9 +184,10 @@
             unicode-bidi: embed;
             font-family: 'Consolas', 'Courier New', monospace;
             background-color: #f1ebd9;
-            padding: 2px 6px;
+            padding: 2px 7px;
             border-radius: 4px;
             color: #834e18;
+            font-size: 0.95em;
         }
 
         pre code {
@@ -239,7 +242,7 @@
             padding: 8px 18px 8px 12px;
             border-radius: 40px;
             font-weight: bold;
-            font-size: 16px;
+            font-size: 17px;
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             display: flex;
@@ -335,7 +338,7 @@
             border-radius: 6px;
             border: 1px solid var(--border-color);
             font-family: inherit;
-            font-size: 14px;
+            font-size: 15px;
         }
 
         .acl-rule-line {
@@ -439,13 +442,13 @@
             border-radius: 6px;
             border: 1px solid var(--border-color);
             font-family: inherit;
-            font-size: 14px;
+            font-size: 15px;
             resize: vertical;
             direction: rtl;
         }
 
         .save-status {
-            font-size: 13px;
+            font-size: 14px;
             color: var(--accent-hover);
             margin-top: 6px;
             min-height: 18px;
@@ -499,7 +502,7 @@
             padding: 10px 14px;
             border-radius: 6px;
             background-color: #f1ebd9;
-            font-size: 14px;
+            font-size: 15px;
             display: none;
         }
 
@@ -511,7 +514,7 @@
             position: sticky;
             top: 10px;
             text-align: center;
-            font-size: 18px;
+            font-size: 19px;
             font-weight: bold;
         }
 
@@ -521,7 +524,7 @@
             padding: 20px;
             border-radius: 10px;
             margin-top: 10px;
-            font-size: 20px;
+            font-size: 21px;
             font-weight: bold;
         }
 
@@ -566,12 +569,12 @@
 
         .diagram-node .node-title {
             font-weight: bold;
-            font-size: 15px;
+            font-size: 16px;
             color: #f5ebd9;
         }
 
         .diagram-node .node-subtitle {
-            font-size: 12px;
+            font-size: 13px;
             color: #a0a0b0;
             font-family: 'Consolas', monospace;
         }
@@ -582,7 +585,7 @@
             align-items: center;
             color: #c07a36;
             font-weight: bold;
-            font-size: 12px;
+            font-size: 13px;
             font-family: 'Consolas', monospace;
         }
 
@@ -620,7 +623,7 @@
             border: 1px solid var(--accent-color);
             padding: 8px 16px;
             border-radius: 20px;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: bold;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -722,7 +725,7 @@
                     <tr>
                         <th>מטרה</th>
                         <th>כתובת רשת</th>
-                        <th>Wildcard Mask</th>
+                        <th><span class="en-text">Wildcard Mask</span></th>
                         <th>משמעות</th>
                     </tr>
                 </thead>
@@ -763,25 +766,25 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Standard Numbered</strong></td>
+                        <td><strong class="en-text">Standard Numbered</strong></td>
                         <td><code class="en-text">1-99 / 1300-1999</code></td>
                         <td><code class="en-text">IP</code> מקור בלבד</td>
                         <td>בקרת גישה בסיסית, אבטחת גישת VTY</td>
                     </tr>
                     <tr>
-                        <td><strong>Standard Named</strong></td>
+                        <td><strong class="en-text">Standard Named</strong></td>
                         <td>שם טקסטואלי</td>
                         <td><code class="en-text">IP</code> מקור בלבד</td>
                         <td>קריאות גבוהה ועריכה נוחה של שורות</td>
                     </tr>
                     <tr>
-                        <td><strong>Extended ACL</strong></td>
+                        <td><strong class="en-text">Extended ACL</strong></td>
                         <td><code class="en-text">100-199 / 2000-2699</code></td>
                         <td>מקור, יעד, פרוטוקולים (<code class="en-text">TCP/UDP/ICMP</code>) ופורטים</td>
                         <td>סינון פרטני, הגנת שרתים, חומות אש</td>
                     </tr>
                     <tr>
-                        <td><strong>Resequencing</strong></td>
+                        <td><strong class="en-text">Resequencing</strong></td>
                         <td>פקודת מערכת</td>
                         <td>סידור מחדש של מספרי שורות ב-ACL</td>
                         <td>הכנסת חוקים חדשים בין שורות קיימות</td>
@@ -834,24 +837,24 @@ access-list 130 permit ip any any</code></pre>
             <table>
                 <thead>
                     <tr>
-                        <th>Class</th>
-                        <th>טווח כתובות פרטיות (RFC 1918)</th>
-                        <th>Subnet Mask / CIDR</th>
+                        <th><span class="en-text">Class</span></th>
+                        <th>טווח כתובות פרטיות (<span class="en-text">RFC 1918</span>)</th>
+                        <th><span class="en-text">Subnet Mask / CIDR</span></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Class A</td>
+                        <td><span class="en-text">Class A</span></td>
                         <td><code class="en-text">10.0.0.0 – 10.255.255.255</code></td>
                         <td><code class="en-text">255.0.0.0 (/8)</code></td>
                     </tr>
                     <tr>
-                        <td>Class B</td>
+                        <td><span class="en-text">Class B</span></td>
                         <td><code class="en-text">172.16.0.0 – 172.31.255.255</code></td>
                         <td><code class="en-text">255.240.0.0 (/12)</code></td>
                     </tr>
                     <tr>
-                        <td>Class C</td>
+                        <td><span class="en-text">Class C</span></td>
                         <td><code class="en-text">192.168.0.0 – 192.168.255.255</code></td>
                         <td><code class="en-text">255.255.0.0 (/16)</code></td>
                     </tr>
@@ -888,7 +891,7 @@ access-list 130 permit ip any any</code></pre>
                     </tr>
                     <tr>
                         <td><strong class="en-text">Outside Local</strong></td>
-                        <td>איך כתובת היעד החיצוני נראית מנקודת המבט של הרשת הפנימית (ברוב המקרים זהה ל-Outside Global)</td>
+                        <td>איך כתובת היעד החיצוני נראית מנקודת המבט של הרשת הפנימית (ברוב המקרים זהה ל-<span class="en-text">Outside Global</span>)</td>
                         <td><code class="en-text">8.8.8.8</code></td>
                     </tr>
                 </tbody>
@@ -908,19 +911,19 @@ access-list 130 permit ip any any</code></pre>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Static NAT</strong></td>
-                        <td>מיפוי 1-ל-1 קבוע בין IP פרטי לציבורי</td>
+                        <td><strong class="en-text">Static NAT</strong></td>
+                        <td>מיפוי 1-ל-1 קבוע בין <span class="en-text">IP</span> פרטי לציבורי</td>
                         <td>לא</td>
-                        <td>אירוח שרתים (Web/Mail) לגישה מבחוץ</td>
+                        <td>אירוח שרתים (<span class="en-text">Web/Mail</span>) לגישה מבחוץ</td>
                     </tr>
                     <tr>
-                        <td><strong>Dynamic NAT</strong></td>
+                        <td><strong class="en-text">Dynamic NAT</strong></td>
                         <td>מיפוי רבים-לרבים מתוך מאגר (<code class="en-text">Pool</code>)</td>
                         <td>לא</td>
                         <td>גישה זמנית לאינטרנט (עד גמר המאגר)</td>
                     </tr>
                     <tr>
-                        <td><strong>PAT (NAT Overload)</strong></td>
+                        <td><strong class="en-text">PAT (NAT Overload)</strong></td>
                         <td>מיפוי רבים-ל-1 תוך שימוש במספרי פורטים</td>
                         <td>כן</td>
                         <td>חיבור מאות/אלפי משתמשים ל-IP ציבורי יחיד</td>
@@ -928,7 +931,7 @@ access-list 130 permit ip any any</code></pre>
                 </tbody>
             </table>
 
-            <h4>פקודות בדיקה ואימות NAT ב-Cisco:</h4>
+            <h4>פקודות בדיקה ואימות NAT ב-<span class="en-text">Cisco</span>:</h4>
             <pre><code>show ip nat translations  ! הצגת טבלת התרגומים הפעילים
 show ip nat statistics    ! הצגת סטטיסטיקות (Hits, Misses, Pools)
 clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
@@ -1023,15 +1026,15 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
             </div>
 
             <div style="background-color: #1e1e1e; border-radius: 8px; border: 2px solid #444; overflow: hidden; font-family: 'Consolas', monospace;">
-                <div style="background-color: #333; color: #ccc; padding: 6px 12px; font-size: 13px; font-weight: bold; display: flex; justify-content: space-between;">
+                <div style="background-color: #333; color: #ccc; padding: 6px 12px; font-size: 14px; font-weight: bold; display: flex; justify-content: space-between;">
                     <span>Packet Tracer CLI - Router R1</span>
                     <span>IOS Software (C2900)</span>
                 </div>
-                <div id="pt-terminal-history" style="height: 280px; overflow-y: auto; padding: 12px; color: #4ade80; font-size: 14px; line-height: 1.4; direction: ltr; text-align: left; white-space: pre-wrap;">R1></div>
+                <div id="pt-terminal-history" style="height: 280px; overflow-y: auto; padding: 12px; color: #4ade80; font-size: 15px; line-height: 1.4; direction: ltr; text-align: left; white-space: pre-wrap;">R1></div>
                 <div style="display: flex; background-color: #111; border-top: 1px solid #333; padding: 8px 12px; align-items: center; direction: ltr;">
                     <span id="pt-prompt" style="color: #4ade80; font-weight: bold; font-family: 'Consolas', monospace; margin-right: 8px;">R1></span>
-                    <input type="text" id="pt-input" style="flex: 1; background: transparent; border: none; color: #fff; font-family: 'Consolas', monospace; font-size: 14px; outline: none;" placeholder="הקלד פקודה (לדוגמה: enable)..." onkeydown="handlePtKey(event)">
-                    <button class="cli-btn" style="padding: 4px 12px; font-size: 12px;" onclick="submitPtCommand()">ENTER</button>
+                    <input type="text" id="pt-input" style="flex: 1; background: transparent; border: none; color: #fff; font-family: 'Consolas', monospace; font-size: 15px; outline: none;" placeholder="הקלד פקודה (לדוגמה: enable)..." onkeydown="handlePtKey(event)">
+                    <button class="cli-btn" style="padding: 4px 12px; font-size: 13px;" onclick="submitPtCommand()">ENTER</button>
                 </div>
             </div>
 
@@ -1051,20 +1054,20 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
 
             <h3 class="enterprise-title">1. עסק קטן</h3>
             <ul>
-                <li><strong>ACLs:</strong> מימוש בסיסי על נתב הקצה או מתג L3. שימוש ב-Standard ACLs להגבלת גישה לניהול ו-Extended ACLs לבקרת Wi-Fi אורחים.</li>
-                <li><strong>NAT:</strong> שימוש ב-PAT (NAT Overload) על נתב הקצה ליציאת כל העובדים לרשת, בצורת <code class="en-text">Static NAT</code> בודד אם קיים שרת מקומי.</li>
+                <li><strong>ACLs:</strong> מימוש בסיסי על נתב הקצה או מתג <span class="en-text">L3</span>. שימוש ב-<span class="en-text">Standard ACLs</span> להגבלת גישה לניהול ו-<span class="en-text">Extended ACLs</span> לבקרת <span class="en-text">Wi-Fi</span> אורחים.</li>
+                <li><strong>NAT:</strong> שימוש ב-<span class="en-text">PAT (NAT Overload)</span> על נתב הקצה ליציאת כל העובדים לרשת, בצורת <code class="en-text">Static NAT</code> בודד אם קיים שרת מקומי.</li>
             </ul>
 
             <h3 class="enterprise-title">2. ארגון גדול</h3>
             <ul>
-                <li><strong>ACLs:</strong> שימוש נרחב ב-Extended ACLs להפרדה קפדנית בין מחלקות, VLANs, וסגמנטים של הדאטה סנטר. שילוב מול מערכות Identity (כגון Cisco ISE / Active Directory).</li>
-                <li><strong>NAT:</strong> יתירות (HSRP/VRRP), שילוב <code class="en-text">Static NAT</code>, <code class="en-text">Policy NAT</code> ו-NAT Exemption עבור מנהרות VPN סניפיות.</li>
+                <li><strong>ACLs:</strong> שימוש נרחב ב-<span class="en-text">Extended ACLs</span> להפרדה קפדנית בין מחלקות, <span class="en-text">VLANs</span>, וסגמנטים של הדאטה סנטר. שילוב מול מערכות <span class="en-text">Identity</span> (כגון <span class="en-text">Cisco ISE / Active Directory</span>).</li>
+                <li><strong>NAT:</strong> יתירות (<span class="en-text">HSRP/VRRP</span>), שילוב <code class="en-text">Static NAT</code>, <code class="en-text">Policy NAT</code> ו-<span class="en-text">NAT Exemption</span> עבור מנהרות <span class="en-text">VPN</span> סניפיות.</li>
             </ul>
 
             <h3 class="enterprise-title">3. מרכז נתונים</h3>
             <ul>
-                <li><strong>ACLs:</strong> מיקרו-סגמנטציה (Microsegmentation), בידוד דיירים (Tenant Isolation) מבוסס SDN / Cisco ACI. החלת חוקים קרוב ככל הניתן למקור.</li>
-                <li><strong>NAT:</strong> הימנעות מ-NAT בתוך ליבת הדאטה סנטר לשמירה על שקיפות וניטור. ביצוע NAT אך ורק בהיקף (Perimeter).</li>
+                <li><strong>ACLs:</strong> מיקרו-סגמנטציה (<span class="en-text">Microsegmentation</span>), בידוד דיירים (<span class="en-text">Tenant Isolation</span>) מבוסס <span class="en-text">SDN / Cisco ACI</span>. החלת חוקים קרוב ככל הניתן למקור.</li>
+                <li><strong>NAT:</strong> הימנעות מ-<span class="en-text">NAT</span> בתוך ליבת הדאטה סנטר לשמירה על שקיפות וניטור. ביצוע <span class="en-text">NAT</span> אך ורק בהיקף (<span class="en-text">Perimeter</span>).</li>
             </ul>
         </div>
     </div>
@@ -1147,15 +1150,15 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
 
             <!-- Main Packet Tracer Terminal Window -->
             <div style="background-color: #1e1e1e; border-radius: 8px; border: 2px solid #444; overflow: hidden; font-family: 'Consolas', monospace;">
-                <div style="background-color: #333; color: #ccc; padding: 6px 12px; font-size: 13px; font-weight: bold; display: flex; justify-content: space-between;">
+                <div style="background-color: #333; color: #ccc; padding: 6px 12px; font-size: 14px; font-weight: bold; display: flex; justify-content: space-between;">
                     <span>Packet Tracer CLI - Lab Router R1</span>
                     <span>Cisco IOS Command Line Interface</span>
                 </div>
-                <div id="m-pt-terminal-history" style="height: 320px; overflow-y: auto; padding: 12px; color: #4ade80; font-size: 14px; line-height: 1.4; direction: ltr; text-align: left; white-space: pre-wrap;">R1></div>
+                <div id="m-pt-terminal-history" style="height: 320px; overflow-y: auto; padding: 12px; color: #4ade80; font-size: 15px; line-height: 1.4; direction: ltr; text-align: left; white-space: pre-wrap;">R1></div>
                 <div style="display: flex; background-color: #111; border-top: 1px solid #333; padding: 8px 12px; align-items: center; direction: ltr;">
                     <span id="m-pt-prompt" style="color: #4ade80; font-weight: bold; font-family: 'Consolas', monospace; margin-right: 8px;">R1></span>
-                    <input type="text" id="m-pt-input" style="flex: 1; background: transparent; border: none; color: #fff; font-family: 'Consolas', monospace; font-size: 14px; outline: none;" placeholder="הקלד פקודה (לדוגמה: enable)..." onkeydown="handleMainPtKey(event)">
-                    <button class="cli-btn" style="padding: 4px 12px; font-size: 12px;" onclick="submitMainPtCommand()">ENTER</button>
+                    <input type="text" id="m-pt-input" style="flex: 1; background: transparent; border: none; color: #fff; font-family: 'Consolas', monospace; font-size: 15px; outline: none;" placeholder="הקלד פקודה (לדוגמה: enable)..." onkeydown="handleMainPtKey(event)">
+                    <button class="cli-btn" style="padding: 4px 12px; font-size: 13px;" onclick="submitMainPtCommand()">ENTER</button>
                 </div>
             </div>
 
@@ -1224,15 +1227,15 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
                 <h3>🔑 תשובות מלאות ומוסברות למבחן המסכם</h3>
                 <ol>
                     <li><strong>שאלה 1:</strong> <code>deny ip any any (Implicit Deny)</code> – בסוף כל ACL מופעל חוק נסתר החוסם כל תנועה שלא הותר במפורש.</li>
-                    <li><strong>שאלה 2:</strong> <code>קרוב ככל הניתן ליעד</code> – מאחר ש-Standard ACL בודק רק מקור, מיקום קרוב ליעד מונע חסימה לא מוצדקת ליעדים אחרים.</li>
-                    <li><strong>שאלה 3:</strong> <code>קרוב ככל הניתן למקור</code> – Extended ACL בודק גם מקור וגם יעד, ולכן חסימה מוקדמת חוסכת רוחב פס ברשת.</li>
-                    <li><strong>שאלה 4:</strong> <code>100-199</code> – טווח המסיכום המיועד ל-Extended Numbered ACLs.</li>
-                    <li><strong>שאלה 5:</strong> <code>show ip nat translations</code> – הפקודה המציגה את טבלת התרגומים הדינמית/סטטית של ה-NAT.</li>
-                    <li><strong>שאלה 6:</strong> <code>מיפוי רבים-ל-1 תוך הבחנה בין המארחים באמצעות מספרי פורטים</code> – זהו העיקרון של PAT (Overload).</li>
+                    <li><strong>שאלה 2:</strong> <code>קרוב ככל הניתן ליעד</code> – מאחר ש-<span class="en-text">Standard ACL</span> בודק רק מקור, מיקום קרוב ליעד מונע חסימה לא מוצדקת ליעדים אחרים.</li>
+                    <li><strong>שאלה 3:</strong> <code>קרוב ככל הניתן למקור</code> – <span class="en-text">Extended ACL</span> בודק גם מקור וגם יעד, ולכן חסימה מוקדמת חוסכת רוחב פס ברשת.</li>
+                    <li><strong>שאלה 4:</strong> <code>100-199</code> – טווח המסיכום המיועד ל-<span class="en-text">Extended Numbered ACLs</span>.</li>
+                    <li><strong>שאלה 5:</strong> <code>show ip nat translations</code> – הפקודה המציגה את טבלת התרגומים הדינמית/סטטית של ה-<span class="en-text">NAT</span>.</li>
+                    <li><strong>שאלה 6:</strong> <code>מיפוי רבים-ל-1 תוך הבחנה בין המארחים באמצעות מספרי פורטים</code> – זהו העיקרון של <span class="en-text">PAT (Overload)</span>.</li>
                     <li><strong>שאלה 7:</strong> <code>Static NAT</code> – יוצר תרגום קבוע 1-ל-1 שמתאים במיוחד לאירוח שרתים.</li>
-                    <li><strong>שאלה 8:</strong> <code>10.0.0.0 – 10.255.255.255</code> – טווח הכתובות הפרטיות התקני של Class A לפי RFC 1918.</li>
-                    <li><strong>שאלה 9:</strong> <code>לסמן אילו סיביות בכתובת ה-IP ייבדקו בהתאמה מדויקת (0) ואילו יתעלמו (1)</code> – הגדרת ה-Wildcard Mask.</li>
-                    <li><strong>שאלה 10:</strong> <code>כדי לשמור על שקיפות התנועה ולאפשר ניטור פשוט ומדויק</code> – סיבת הימנעות מ-NAT בליבת הדאטה סנטר.</li>
+                    <li><strong>שאלה 8:</strong> <code>10.0.0.0 – 10.255.255.255</code> – טווח הכתובות הפרטיות התקני של <span class="en-text">Class A</span> לפי <span class="en-text">RFC 1918</span>.</li>
+                    <li><strong>שאלה 9:</strong> <code>לסמן אילו סיביות בכתובת ה-IP ייבדקו בהתאמה מדויקת (0) ואילו יתעלמו (1)</code> – הגדרת ה-<span class="en-text">Wildcard Mask</span>.</li>
+                    <li><strong>שאלה 10:</strong> <code>כדי לשמור על שקיפות התנועה ולאפשר ניטור פשוט ומדויק</code> – סיבת הימנעות מ-<span class="en-text">NAT</span> בליבת הדאטה סנטר.</li>
                 </ol>
             </div>
         </div>
@@ -1702,36 +1705,36 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
     const quizQuestions = [
         {
             q: "מהי ברירת המחדל של כל ACL אם לא נמצאה אף התאמה עבור החבילה?",
-            options: ["permit ip any any", "deny ip any any (Implicit Deny)", "מעביר את החבילה ללא בדיקה", "שולח הודעת שגיאה בחזרה למקור"],
+            options: ["<code class=\"en-text\">permit ip any any</code>", "<code class=\"en-text\">deny ip any any</code> (<span class=\"en-text\">Implicit Deny</span>)", "מעביר את החבילה ללא בדיקה", "שולח הודעת שגיאה בחזרה למקור"],
             correct: 1,
-            explain: "בסוף כל ACL קיים חוק נסתר (Implicit Deny) שחוסם כל תנועה שלא הותרה במפורש."
+            explain: "בסוף כל ACL קיים חוק נסתר (<span class=\"en-text\">Implicit Deny</span>) שחוסם כל תנועה שלא הותרה במפורש."
         },
         {
-            q: "היכן מומלץ למקם Standard ACL בטופולוגיה?",
-            options: ["קרוב ככל הניתן למקור", "קרוב ככל הניתן ליעד", "תמיד על נתב הגבול (Edge Router) בלבד", "אין משמעות למיקום"],
+            q: "היכן מומלץ למקם <span class=\"en-text\">Standard ACL</span> בטופולוגיה?",
+            options: ["קרוב ככל הניתן למקור", "קרוב ככל הניתן ליעד", "תמיד על נתב הגבול (<span class=\"en-text\">Edge Router</span>) בלבד", "אין משמעות למיקום"],
             correct: 1,
-            explain: "מכיוון ש-Standard ACL בודק רק כתובת מקור, מיקום קרוב ליעד מונע חסימה של תנועה לגיטימית ליעדים אחרים."
+            explain: "מכיוון ש-<span class=\"en-text\">Standard ACL</span> בודק רק כתובת מקור, מיקום קרוב ליעד מונע חסימה של תנועה לגיטימית ליעדים אחרים."
         },
         {
-            q: "היכן מומלץ למקם Extended ACL בטופולוגיה?",
-            options: ["קרוב ככל הניתן למקור", "קרוב ככל הניתן ליעד", "רק על מתג ה-Core", "לא ניתן להחיל Extended ACL על ממשק"],
+            q: "היכן מומלץ למקם <span class=\"en-text\">Extended ACL</span> בטופולוגיה?",
+            options: ["קרוב ככל הניתן למקור", "קרוב ככל הניתן ליעד", "רק על מתג ה-<span class=\"en-text\">Core</span>", "לא ניתן להחיל <span class=\"en-text\">Extended ACL</span> על ממשק"],
             correct: 0,
-            explain: "מאחר ש-Extended ACL בודק גם מקור וגם יעד, מיקום קרוב למקור חוסך רוחב פס מיותר ברשת."
+            explain: "מאחר ש-<span class=\"en-text\">Extended ACL</span> בודק גם מקור וגם יעד, מיקום קרוב למקור חוסך רוחב פס מיותר ברשת."
         },
         {
-            q: "מהו טווח המספרים התקני עבור Extended Numbered ACL?",
-            options: ["1-99", "100-199", "1300-1999", "2700-2999"],
+            q: "מהו טווח המספרים התקני עבור <span class=\"en-text\">Extended Numbered ACL</span>?",
+            options: ["<code class=\"en-text\">1-99</code>", "<code class=\"en-text\">100-199</code>", "<code class=\"en-text\">1300-1999</code>", "<code class=\"en-text\">2700-2999</code>"],
             correct: 1,
-            explain: "טווח 100-199 (וגם 2000-2699) מיועד ל-Extended ACLs, בעוד 1-99 ו-1300-1999 מיועדים ל-Standard ACLs."
+            explain: "טווח <code class=\"en-text\">100-199</code> (וגם <code class=\"en-text\">2000-2699</code>) מיועד ל-<span class=\"en-text\">Extended ACLs</span>, בעוד <code class=\"en-text\">1-99</code> ו-<code class=\"en-text\">1300-1999</code> מיועדים ל-<span class=\"en-text\">Standard ACLs</span>."
         },
         {
-            q: "איזו פקודה מציגה את טבלת תרגומי ה-NAT הפעילים כרגע על הנתב?",
-            options: ["show ip nat statistics", "debug ip nat", "show ip nat translations", "show running-config nat"],
+            q: "איזו פקודה מציגה את טבלת תרגומי ה-<span class=\"en-text\">NAT</span> הפעילים כרגע על הנתב?",
+            options: ["<code class=\"en-text\">show ip nat statistics</code>", "<code class=\"en-text\">debug ip nat</code>", "<code class=\"en-text\">show ip nat translations</code>", "<code class=\"en-text\">show running-config nat</code>"],
             correct: 2,
-            explain: "הפקודה show ip nat translations מציגה את כל התרגומים הפעילים כרגע בטבלה."
+            explain: "הפקודה <code class=\"en-text\">show ip nat translations</code> מציגה את כל התרגומים הפעילים כרגע בטבלה."
         },
         {
-            q: "מהו העיקרון המרכזי מאחורי PAT (NAT Overload)?",
+            q: "מהו העיקרון המרכזי מאחורי <span class=\"en-text\">PAT (NAT Overload)</span>?",
             options: [
                 "מיפוי אחד-לאחד קבוע בין כתובת פרטית לציבורית",
                 "מיפוי רבים-לרבים מתוך מאגר כתובות",
@@ -1739,41 +1742,41 @@ clear ip nat translation * ! ניקוי טבלת התרגומים</code></pre>
                 "חסימת כל התנועה היוצאת מהרשת הפנימית"
             ],
             correct: 2,
-            explain: "PAT מאפשר לריבוי מארחים פנימיים לשתף כתובת IP ציבורית יחידה, כאשר ההבחנה ביניהם מתבצעת לפי מספרי פורטים."
+            explain: "<span class=\"en-text\">PAT</span> מאפשר לריבוי מארחים פנימיים לשתף כתובת <span class=\"en-text\">IP</span> ציבורית יחידה, כאשר ההבחנה ביניהם מתבצעת לפי מספרי פורטים."
         },
         {
-            q: "איזה סוג NAT הכי מתאים לאירוח שרת פנימי שצריך להיות נגיש מהאינטרנט תחת כתובת קבועה?",
-            options: ["Dynamic NAT", "PAT (Overload)", "Static NAT", "NAT Exemption"],
+            q: "איזה סוג <span class=\"en-text\">NAT</span> הכי מתאים לאירוח שרת פנימי שצריך להיות נגיש מהאינטרנט תחת כתובת קבועה?",
+            options: ["<span class=\"en-text\">Dynamic NAT</span>", "<span class=\"en-text\">PAT (Overload)</span>", "<span class=\"en-text\">Static NAT</span>", "<span class=\"en-text\">NAT Exemption</span>"],
             correct: 2,
-            explain: "Static NAT יוצר מיפוי קבוע 1-ל-1, ולכן מתאים לשרתים שצריכים כתובת ציבורית יציבה וידועה מראש."
+            explain: "<span class=\"en-text\">Static NAT</span> יוצר מיפוי קבוע 1-ל-1, ולכן מתאים לשרתים שצריכים כתובת ציבורית יציבה וידועה מראש."
         },
         {
-            q: "מהו טווח הכתובות הפרטיות (RFC 1918) של Class A?",
-            options: ["172.16.0.0 – 172.31.255.255", "192.168.0.0 – 192.168.255.255", "10.0.0.0 – 10.255.255.255", "127.0.0.0 – 127.255.255.255"],
+            q: "מהו טווח הכתובות הפרטיות (<span class=\"en-text\">RFC 1918</span>) של <span class=\"en-text\">Class A</span>?",
+            options: ["<code class=\"en-text\">172.16.0.0 – 172.31.255.255</code>", "<code class=\"en-text\">192.168.0.0 – 192.168.255.255</code>", "<code class=\"en-text\">10.0.0.0 – 10.255.255.255</code>", "<code class=\"en-text\">127.0.0.0 – 127.255.255.255</code>"],
             correct: 2,
-            explain: "טווח Class A הפרטי לפי RFC 1918 הוא 10.0.0.0 עד 10.255.255.255, עם מסכה 255.0.0.0 (/8)."
+            explain: "טווח <span class=\"en-text\">Class A</span> הפרטי לפי <span class=\"en-text\">RFC 1918</span> הוא <code class=\"en-text\">10.0.0.0</code> עד <code class=\"en-text\">10.255.255.255</code>, עם מסכה <code class=\"en-text\">255.0.0.0 (/8)</code>."
         },
         {
-            q: "מה תפקידה של ה-Wildcard Mask בהגדרת ACL?",
+            q: "מה תפקידה של ה-<span class=\"en-text\">Wildcard Mask</span> בהגדרת ACL?",
             options: [
                 "לקבוע את מהירות הקישור",
-                "לסמן אילו סיביות בכתובת ה-IP ייבדקו בהתאמה מדויקת (0) ואילו יתעלמו (1)",
+                "לסמן אילו סיביות בכתובת ה-<span class=\"en-text\">IP</span> ייבדקו בהתאמה מדויקת (0) ואילו יתעלמו (1)",
                 "להצפין את תוכן החבילה",
-                "לשמש כתובת ברירת מחדל (Default Gateway)"
+                "לשמש כתובת ברירת מחדל (<span class=\"en-text\">Default Gateway</span>)"
             ],
             correct: 1,
-            explain: "ב-Wildcard Mask, הספרה 0 מסמנת בדיקה מדויקת של הסיבית, והספרה 1 מסמנת התעלמות ממנה (כל ערך מתקבל)."
+            explain: "ב-<span class=\"en-text\">Wildcard Mask</span>, הספרה 0 מסמנת בדיקה מדויקת של הסיבית, והספרה 1 מסמנת התעלמות ממנה (כל ערך מתקבל)."
         },
         {
-            q: "מדוע לא מומלץ לבצע NAT בתוך ליבת (Core) מרכז הנתונים?",
+            q: "מדוע לא מומלץ לבצע <span class=\"en-text\">NAT</span> בתוך ליבת (<span class=\"en-text\">Core</span>) מרכז הנתונים?",
             options: [
-                "כי NAT לא נתמך כלל במרכזי נתונים",
+                "כי <span class=\"en-text\">NAT</span> לא נתמך כלל במרכזי נתונים",
                 "כדי לשמור על שקיפות התנועה ולאפשר ניטור פשוט ומדויק",
                 "כי הוא מייקר את עלות החומרה באופן משמעותי",
-                "כי NAT עובד רק עם כתובות IPv6"
+                "כי <span class=\"en-text\">NAT</span> עובד רק עם כתובות <span class=\"en-text\">IPv6</span>"
             ],
             correct: 1,
-            explain: "ביצוע NAT רק בהיקף (Perimeter) ולא בליבת מרכז הנתונים שומר על שקיפות מלאה של כתובות המקור והיעד לצורכי ניטור ואבחון."
+            explain: "ביצוע <span class=\"en-text\">NAT</span> רק בהיקף (<span class=\"en-text\">Perimeter</span>) ולא בליבת מרכז הנתונים שומר על שקיפות מלאה של כתובות המקור והיעד לצורכי ניטור ואבחון."
         }
     ];
 
